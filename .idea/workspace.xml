@@ -4,32 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bf3d110-5d1f-4751-a71b-10b656a49409" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/ApiService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Booking.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Entities/AccType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Entities/PricePerType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Entities/PricePeriod.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/HelloApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/HelloController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/LocalDateTypeAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/demosystemfront/addBooking.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/demosystemfront/hello-view.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/example/demosystemfront/priceListView.fxml" afterDir="false" />
+    <list default="true" id="1bf3d110-5d1f-4751-a71b-10b656a49409" name="Changes" comment="-">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/ApiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/AddBookingViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/AddBookingViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/CalendarViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/CalendarViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/PriceListViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/PriceListViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Entities/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Entities/Booking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/HelloApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,8 +44,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -92,6 +77,7 @@
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.5367816&quot;,
@@ -200,11 +186,30 @@
       <workItem from="1713806726069" duration="5595000" />
       <workItem from="1714764152515" duration="419000" />
       <workItem from="1714986062329" duration="10552000" />
-      <workItem from="1715009481855" duration="3081000" />
+      <workItem from="1715009481855" duration="9073000" />
+      <workItem from="1715503465686" duration="6849000" />
+      <workItem from="1715683890866" duration="1495000" />
+      <workItem from="1716118743377" duration="15733000" />
+      <workItem from="1716678432297" duration="252000" />
+      <workItem from="1716808176571" duration="6266000" />
+      <workItem from="1716894771686" duration="372000" />
     </task>
+    <task id="LOCAL-00001" summary="-">
+      <option name="closed" value="true" />
+      <created>1715014235918</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1715014235918</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="-" />
+    <option name="LAST_COMMIT_MESSAGE" value="-" />
   </component>
 </project>

@@ -4,6 +4,8 @@ module com.example.demosystemfront {
     requires java.net.http;
     requires com.calendarfx.view;
     requires com.google.gson;
+    requires org.apache.httpcomponents.httpclient;
+    requires org.apache.pdfbox;
 
 
     opens com.example.demosystemfront to javafx.fxml, com.google.gson;

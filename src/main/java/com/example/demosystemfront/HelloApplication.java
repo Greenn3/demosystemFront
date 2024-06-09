@@ -1,33 +1,26 @@
 package com.example.demosystemfront;
 
+
+import com.example.demosystemfront.Controllers.MenuController;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import com.calendarfx.model.Calendar;
-import com.calendarfx.model.Calendar.Style;
-import com.calendarfx.model.CalendarSource;
-import com.calendarfx.view.CalendarView;
-
-
-
-
-import java.io.IOException;
 
 public class HelloApplication extends Application {
+
+    Scene scene;
     @Override
-    public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
-        CalendarView calendarView = new CalendarView();
+    public void start(Stage primaryStage) throws Exception {
+        primaryStage.setTitle("Menu");
 
-        stage.setTitle("Hello!");
-        stage.setScene(scene);
-        stage.show();
+        MenuController menuScene = new MenuController(primaryStage);
+        Scene scene = new Scene(menuScene.createContent(), 400, 300);
+        primaryStage.setScene(scene);
 
-
+        primaryStage.show();
     }
+
 
     public static void main(String[] args) {
         launch();

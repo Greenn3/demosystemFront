@@ -39,6 +39,22 @@ public class Booking {
 
     }
 
+    public Booking(String name, LocalDate arrivalDate, LocalDate departureDate, AccType accType) {
+        this.name = name;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+        this.accType = accType;
+
+    }
+
+    public AccType getAccType() {
+        return accType;
+    }
+
+    public void setAccType(AccType accType) {
+        this.accType = accType;
+    }
+
     public Integer getId() {
        return id;
     }
