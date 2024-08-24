@@ -156,12 +156,18 @@ return root;
 
     public Scene createContent() {
         VBox layout = new VBox(10);
-        layout.setStyle("-fx-background-color: lightyellow");
+       // layout.setStyle("-fx-background-color: lightyellow");
 
         Button backButton = new Button("<");
         backButton.setOnAction(e -> {
             MenuController menuController = new MenuController(primaryStage);
-            primaryStage.setScene(new Scene(menuController.createContent(), 400, 300));
+            try {
+                primaryStage.setScene(menuController.createContent());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
         });
         GridPane gridPane = null;
         try {
@@ -173,6 +179,7 @@ return root;
         }
         layout.getChildren().add(backButton);
         layout.getChildren().add(gridPane);
+        layout.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         return new Scene(layout, 600, 600);
     }
 }

@@ -15,7 +15,7 @@ public class HelloApplication extends Application {
         primaryStage.setTitle("Menu");
 
         MenuController menuScene = new MenuController(primaryStage);
-        Scene scene = new Scene(menuScene.createContent(), 400, 300);
+        Scene scene = menuScene.createContent();
         primaryStage.setScene(scene);
 
         primaryStage.show();

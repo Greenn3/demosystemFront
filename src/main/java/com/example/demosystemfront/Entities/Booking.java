@@ -22,6 +22,38 @@ public class Booking {
 
    public AccType accType;
 
+   private String info;
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    private String phone;
+    private String email;
+    private boolean hasArrived = false;
+    private boolean isPaid = false;
+    private boolean hasLeft = false;
+
     public Booking() {
     }
 
@@ -32,18 +64,23 @@ public class Booking {
         this.departureDate = departureDate;
     }
 
-    public Booking(String name, LocalDate arrivalDate, LocalDate departureDate) {
-        this.name = name;
-        this.arrivalDate = arrivalDate;
-        this.departureDate = departureDate;
-
-    }
-
     public Booking(String name, LocalDate arrivalDate, LocalDate departureDate, AccType accType) {
         this.name = name;
         this.arrivalDate = arrivalDate;
         this.departureDate = departureDate;
         this.accType = accType;
+
+    }
+
+
+    public Booking(String name, LocalDate arrivalDate, LocalDate departureDate, AccType accType, String phone, String email, String info) {
+        this.name = name;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+        this.accType = accType;
+        this.phone = phone;
+        this.email = email;
+        this.info = info;
 
     }
 

@@ -6,20 +6,141 @@ import com.example.demosystemfront.Entities.PricePeriod;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http. HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ApiService {
-    public List<Booking> loadAllReservations() throws URISyntaxException, IOException, InterruptedException {
+
+    //dla daty, po dacie przyjazdu
+    public List<Booking> findReservationsByArrivalDate(LocalDate arrivalDate) {
+        List<Booking> arrivingReservations;
+
+        try {
+            // Encode the date parameter
+            String encodedDate = URLEncoder.encode(arrivalDate.toString(), StandardCharsets.UTF_8);
+
+            // Create HttpClient instance
+            HttpClient client = HttpClient.newBuilder().build();
+
+            // Create request URI with date parameter
+            String url = "http://localhost:8080/getBookingByArrivalDate?date=" + encodedDate;
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .build();
+
+            // Send request and get response
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            // Print the JSON response for debugging
+            System.out.println("JSON Response: " + response.body());
+
+            // Check if the response body is empty
+            if (response.body().isEmpty()) {
+                return List.of();
+            }
+
+            // Configure Gson with a LocalDate adapter
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .create();
+
+            // Define the type for the list of bookings
+            Type listType = new TypeToken<List<Booking>>() {}.getType();
+
+            // Deserialize the response body to a list of Booking objects
+            arrivingReservations = gson.fromJson(response.body(), listType);
+
+            return arrivingReservations;
+
+        } catch (IOException | InterruptedException e) {
+            // Handle exceptions by showing an error alert
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Server Error");
+                alert.setContentText("Could not retrieve bookings: " + e.getMessage());
+                alert.showAndWait();
+            });
+            e.printStackTrace();
+        }
+
+        // Return an empty list in case of an exception
+        return List.of();
+    }
+
+    public List<Booking> findReservationsByDepartureDate(LocalDate departureDate) throws IOException, InterruptedException {
+        List<Booking> departingReservations;
+try {
+    // Encode the date parameter
+    String encodedDate = URLEncoder.encode(departureDate.toString(), StandardCharsets.UTF_8);
+
+    // Create HttpClient instance
+    HttpClient client = HttpClient.newBuilder().build();
+
+    // Create request URI with date parameter
+    String url = "http://localhost:8080/getBookingByDepartureDate?date=" + encodedDate;
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url))
+            .build();
+
+    // Send request and get response
+    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+    // Print the JSON response for debugging
+    System.out.println("JSON Response: " + response.body());
+
+    // Check if the response body is empty
+    if (response.body().isEmpty()) {
+        return List.of();
+    }
+
+    // Configure Gson with a LocalDate adapter
+    Gson gson = new GsonBuilder()
+            .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+            .create();
+
+    // Define the type for the list of bookings
+    Type listType = new TypeToken<List<Booking>>() {
+    }.getType();
+
+    // Deserialize the response body to a list of Booking objects
+    departingReservations = gson.fromJson(response.body(), listType);
+
+    return departingReservations;
+}
+ catch (IOException | InterruptedException e) {
+            // Handle exceptions by showing an error alert
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Server Error");
+                alert.setContentText("Could not retrieve bookings: " + e.getMessage());
+                alert.showAndWait();
+            });
+            e.printStackTrace();
+        }
+
+        // Return an empty list in case of an exception
+        return List.of();
+    }
+
+
+
+  //lista wszystkich rezerwacji
+   public List<Booking> loadAllReservations() throws URISyntaxException, IOException, InterruptedException {
         List<Booking> bookingsList;
 
         HttpClient client = HttpClient.newBuilder()
@@ -40,7 +161,7 @@ return  bookingsList;
 
     }
 
-    public void saveOneBookingToDatabase(Booking booking) throws IOException, InterruptedException {
+    public void saveOneBookingToDatabase(Booking booking)  {
 
 
 
@@ -61,7 +182,14 @@ return  bookingsList;
                 .build();
 
         // Send the request and get the response
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = null;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
 
         // Print response
         System.out.println("Response code: " + response.statusCode());
@@ -201,6 +329,28 @@ return  pricePeriodList;
         }.getType();
         pricePerTypeList = gson3.fromJson((String) response3.body(), listType3);
 return  pricePerTypeList;
+
+
+    }
+    public Booking findBookingById(Integer id) throws IOException, InterruptedException {
+        String idS = id.toString();
+        HttpClient client = HttpClient.newBuilder()
+                .build();
+        Booking booking;
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/getBookingById?id=" + id))
+                .build();
+        System.out.println(request);
+        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                .create();
+        System.out.println(response.body());
+        Type type = new TypeToken<Booking>(){}.getType();
+        booking = gson.fromJson((String) response.body(), type);
+        System.out.println(booking.toString());
+        return booking;
+
 
 
     }
