@@ -7,6 +7,7 @@ import com.calendarfx.view.AllDayView;
 import com.calendarfx.view.WeekDayHeaderView;
 import com.calendarfx.view.popover.EntryPopOverContentPane;
 import com.example.demosystemfront.ApiService;
+
 import com.example.demosystemfront.Entities.Booking;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -21,6 +22,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -33,6 +35,15 @@ import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+
+
+
+import com.calendarfx.view.WeekDayHeaderView;
+import javafx.scene.control.Label;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 
 public class CalendarViewController {
     private Stage primaryStage;
@@ -91,10 +102,30 @@ String id = pop.getEntry().getId();
 
     protected VBox showBookingScreen() throws IOException {
 
+       // WeekDayHeaderView headerView = new WeekDayHeaderView(7);
+
+        // header format
+        DateTimeFormatter numericDateFormatter = DateTimeFormatter.ofPattern("dd-MM");
+
+        // Create the WeekDayHeaderView and set the cell factory to use the custom formatter
         WeekDayHeaderView headerView = new WeekDayHeaderView(7);
+        headerView.setCellFactory(new Callback<WeekDayHeaderView, WeekDayHeaderView.WeekDayHeaderCell>() {
+            @Override
+            public WeekDayHeaderView.WeekDayHeaderCell call(WeekDayHeaderView view) {
+                WeekDayHeaderView.WeekDayHeaderCell cell = new WeekDayHeaderView.WeekDayHeaderCell(view);
+                cell.setFormatter(numericDateFormatter); // Set the custom formatter
+                return cell;
+            }
+        });
+
+       // headerView.getCellFactory();
+
+
 
         AllDayView dayView = new AllDayView(7);
+        AllDayView dayView2 = new AllDayView(7);
         dayView.bind(headerView, true);
+        dayView2.bind(headerView, true);
         VBox vBoxEntryView = new VBox();
 
 
@@ -183,7 +214,7 @@ String id = pop.getEntry().getId();
             }
         };
         VBox vBox = new VBox();
-        vBox.getChildren().addAll(toolBarControls, headerView, dayView);
+        vBox.getChildren().addAll(toolBarControls, headerView, dayView, dayView2);
         updateTimeThread.setPriority(Thread.MIN_PRIORITY);
         updateTimeThread.setDaemon(true);
         updateTimeThread.start();
@@ -206,7 +237,7 @@ String id = pop.getEntry().getId();
     public Scene createContent() throws IOException, URISyntaxException, InterruptedException {
         VBox layout = new VBox(10);
        // layout.setStyle("-fx-background-color: lightcoral");
-
+//back button
         Button backButton = new Button("<");
         backButton.setOnAction(e -> {
             MenuController menuScene = new MenuController(primaryStage);
@@ -219,12 +250,16 @@ String id = pop.getEntry().getId();
                 throw new RuntimeException(ex);
             }
         });
+
+
         bookingsList = apiService.loadAllReservations();
         showBookingScreen();
         VBox vBoxCalendar = showBookingScreen();
         layout.getChildren().add(backButton);
         layout.getChildren().add(vBoxCalendar);
-        layout.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        //layout.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+
+        layout.getStylesheets().add(getClass().getResource("/newStyle.css").toExternalForm());
         return new Scene(layout, 900, 700);
     }
 

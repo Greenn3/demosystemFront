@@ -118,8 +118,8 @@ public class AddBookingViewController {
         scrollPane.setPadding(new Insets(10));
 
         Scene scene = new Scene(scrollPane, 500, 700);
-        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
-
+        //scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/newStyle.css").toExternalForm());
         return scene;
     }
 }

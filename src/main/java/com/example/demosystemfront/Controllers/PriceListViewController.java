@@ -1,30 +1,24 @@
 package com.example.demosystemfront.Controllers;
 
+import com.example.demosystemfront.AlertWindow;
 import com.example.demosystemfront.ApiService;
 import com.example.demosystemfront.Entities.AccType;
 import com.example.demosystemfront.Entities.PricePerType;
 import com.example.demosystemfront.Entities.PricePeriod;
-import com.example.demosystemfront.LocalDateTypeAdapter;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.time.LocalDate;
+import java.net.ConnectException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +32,7 @@ public class PriceListViewController {
         this.primaryStage = primaryStage;
     }
 
-
+AlertWindow alertWindow = new AlertWindow();
 
     public void testPrintLists(){
         for(AccType a : accTypes) System.out.print(a.getName()+ "\t") ;
@@ -60,9 +54,13 @@ public class PriceListViewController {
     }
     @FXML
     protected GridPane showPriceListScreen() throws IOException, InterruptedException {
-        accTypes = apiService.loadAllAccTypes();
-        pricePerTypeList = apiService.loadAllPricePerType();
-        pricePeriods = apiService.loadAllPricePeriods();
+        try{
+            accTypes = apiService.loadAllAccTypes();
+            pricePerTypeList = apiService.loadAllPricePerType();
+            pricePeriods = apiService.loadAllPricePeriods();
+        } catch (ConnectException e){
+            alertWindow.getServerConnectionError();
+        }
         GridPane mainGrid = new GridPane();
         mainGrid.setHgap(2);
         mainGrid.setVgap(2);
@@ -75,6 +73,8 @@ public class PriceListViewController {
                 int id = Integer.parseInt(String.valueOf(row) + String.valueOf(col));
                 TextField textField = new TextField();
                 textField.setText(pricePerTypeList.get(count).getPrice().toString());
+                TextField spare = new TextField();
+                spare.setText(" EUR");
                 count++;
                 int finalRow = row;
                 int finalCol = col;
@@ -82,16 +82,25 @@ public class PriceListViewController {
                     if (!newValue) {
                         System.out.println("Focus lost. Text is: " + textField.getText());
                         // Perform action here
+                      //  String sub = textField.
+                        //String sub = textField.getText().substring(0, textField.getText().length() - 4);
                         update(textField.getText(), finalRow, finalCol);
                     }
                 });
 
-                //  PricePerType pricePerType = new PricePerType(id, pricePeriods.get(col), accTypes.get(row), Double.parseDouble(textField.getText()));
 
-                //pricePerTypeList.add(pricePerType);
-                textField.setPrefWidth(100);
                 textField.setPrefHeight(50);
-                mainGrid.add(textField, col, row);
+                HBox box = new HBox();
+                spare.setPrefHeight(50);
+                box.setMaxWidth(150);
+                spare.setEditable(false);
+                box.setStyle("-fx-border-color: black; -fx-border-width: 2;");
+
+                // Make the borders of textField and spare invisible using CSS
+                textField.setStyle("-fx-background-color: white; -fx-border-color: transparent;");
+                spare.setStyle("-fx-background-color: white; -fx-border-color: transparent;");
+                box.getChildren().addAll(textField, spare);
+                mainGrid.add(box, col, row);
             }
         }
 
@@ -102,8 +111,9 @@ public class PriceListViewController {
 
         for (int col = 0; col < 5; col++) {
             TextField textField = new TextField(pricePeriods.get(col).getName());
-            textField.setPrefWidth(100);
+            textField.setPrefWidth(150);
             textField.setPrefHeight(50);
+            textField.setEditable(false);
             topHeaderGrid.add(textField, col, 0);
         }
 
@@ -114,8 +124,9 @@ public class PriceListViewController {
 
         for (int row = 0; row < 6; row++) {
             TextField textField = new TextField(accTypes.get(row).getName());
-            textField.setPrefWidth(100);
+            textField.setPrefWidth(200);
             textField.setPrefHeight(50);
+            textField.setEditable(false);
             leftHeaderGrid.add(textField, 0, row);
         }
         Button button = new Button();
@@ -125,6 +136,10 @@ public class PriceListViewController {
             public void handle(ActionEvent event) {
                 try {
                     apiService.updatePriceListToDataBase(pricePerTypeList);
+
+                    //błąd połączenia z serwerem
+                } catch (ConnectException e){
+                alertWindow.getServerConnectionError();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 } catch (InterruptedException e) {
@@ -141,7 +156,7 @@ public class PriceListViewController {
         root.add(button, 0, 2);
 
         // Create the scene
-        Scene scene = new Scene(root, 700, 400);
+        Scene scene = new Scene(root, 700, 800);
 
         // Set the scene to the stage
         Stage primaryStage = new Stage();
@@ -179,7 +194,8 @@ return root;
         }
         layout.getChildren().add(backButton);
         layout.getChildren().add(gridPane);
-        layout.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
-        return new Scene(layout, 600, 600);
+        //layout.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        layout.getStylesheets().add(getClass().getResource("/newStyle.css").toExternalForm());
+        return new Scene(layout, 1000, 500);
     }
 }

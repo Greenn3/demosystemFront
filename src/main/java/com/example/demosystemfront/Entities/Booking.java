@@ -24,8 +24,20 @@ public class Booking {
 
    private String info;
 
+   public Double discount;
+
+
+
     public String getInfo() {
         return info;
+    }
+
+    public Booking(Integer id, String name, LocalDate arrivalDate, LocalDate departureDate, AccType accType) {
+        this.id = id;
+        this.name = name;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+        this.accType = accType;
     }
 
     public void setInfo(String info) {
@@ -81,7 +93,21 @@ public class Booking {
         this.phone = phone;
         this.email = email;
         this.info = info;
+    }
 
+    public Booking(Integer id, String name, LocalDate arrivalDate, LocalDate departureDate, AccType accType, String info, Double discount, String phone, String email, boolean hasArrived, boolean isPaid, boolean hasLeft) {
+        this.id = id;
+        this.name = name;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+        this.accType = accType;
+        this.info = info;
+        this.discount = discount;
+        this.phone = phone;
+        this.email = email;
+        this.hasArrived = hasArrived;
+        this.isPaid = isPaid;
+        this.hasLeft = hasLeft;
     }
 
     public AccType getAccType() {

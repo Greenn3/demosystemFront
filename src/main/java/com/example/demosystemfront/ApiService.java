@@ -6,14 +6,23 @@ import com.example.demosystemfront.Entities.PricePeriod;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URLEncoder;
+import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http. HttpRequest;
 import java.net.http.HttpResponse;
@@ -25,6 +34,11 @@ import java.util.List;
 public class ApiService {
 
     //dla daty, po dacie przyjazdu
+
+AlertWindow alertWindow = new AlertWindow();
+
+    private static final String API_KEY = "yoursecureapikey"; // Replace with your API key
+
     public List<Booking> findReservationsByArrivalDate(LocalDate arrivalDate) {
         List<Booking> arrivingReservations;
 
@@ -39,6 +53,7 @@ public class ApiService {
             String url = "http://localhost:8080/getBookingByArrivalDate?date=" + encodedDate;
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
+                    // .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
                     .build();
 
             // Send request and get response
@@ -65,19 +80,12 @@ public class ApiService {
 
             return arrivingReservations;
 
-        } catch (IOException | InterruptedException e) {
-            // Handle exceptions by showing an error alert
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Server Error");
-                alert.setContentText("Could not retrieve bookings: " + e.getMessage());
-                alert.showAndWait();
-            });
-            e.printStackTrace();
+       } catch (IOException | InterruptedException  e) {
+          //  showAutoCloseErrorPopup("Error", "Something went wrong!", 5); // Shows for 3 seconds
+            alertWindow.showNotification("Brak połączenia z serwerem", 5);
         }
 
-        // Return an empty list in case of an exception
+      //  Return an empty list in case of an exception
         return List.of();
     }
 
@@ -94,6 +102,7 @@ try {
     String url = "http://localhost:8080/getBookingByDepartureDate?date=" + encodedDate;
     HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
+           // .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
             .build();
 
     // Send request and get response
@@ -121,16 +130,8 @@ try {
 
     return departingReservations;
 }
- catch (IOException | InterruptedException e) {
-            // Handle exceptions by showing an error alert
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Server Error");
-                alert.setContentText("Could not retrieve bookings: " + e.getMessage());
-                alert.showAndWait();
-            });
-            e.printStackTrace();
+ catch (IOException | InterruptedException  e) {
+     alertWindow.showNotification("Brak połączenia z serwerem", 5);
         }
 
         // Return an empty list in case of an exception
@@ -141,24 +142,44 @@ try {
 
   //lista wszystkich rezerwacji
    public List<Booking> loadAllReservations() throws URISyntaxException, IOException, InterruptedException {
-        List<Booking> bookingsList;
+        try {
+            List<Booking> bookingsList;
 
-        HttpClient client = HttpClient.newBuilder()
-                .build();
+            HttpClient client = HttpClient.newBuilder()
+                    .build();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/rezerwacje"))
-                .build();
-        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                .create();
-        Type listType = new TypeToken<List<Booking>>() {
-        }.getType();
-        bookingsList = gson.fromJson((String) response.body(), listType);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/rezerwacje"))
+                //    .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
+                    .build();
 
-return  bookingsList;
+            HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .create();
+            Type listType = new TypeToken<List<Booking>>() {
+            }.getType();
+            bookingsList = gson.fromJson((String) response.body(), listType);
+            int responseCode = response.statusCode();
 
+            // Check for success (status code 200 OK)
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Handle successful response
+                System.out.println("Data fetched successfully!");
+                // Process and display data...
+            } else {
+                // Handle non-200 response codes
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                System.out.println("here " + responseCode);
+                alert.setContentText("Błąd serwera, kod: "+ responseCode);
+            }
+
+            return bookingsList;
+        }
+        catch (IOException e){
+            alertWindow.getServerConnectionError();
+        }
+return List.of();
     }
 
     public void saveOneBookingToDatabase(Booking booking)  {
@@ -178,6 +199,7 @@ return  bookingsList;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/dodajRezerwacje"))
                 .header("Content-Type", "application/json")
+              //  .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
@@ -185,12 +207,12 @@ return  bookingsList;
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        } catch (IOException | InterruptedException e) {
+           Alert alert = new Alert(Alert.AlertType.ERROR);
+           alert.setContentText("Nie nie utworzono rezerwacji. Brak połączenia z serwerem!");
+           alert.show();
 
+        }
         // Print response
         System.out.println("Response code: " + response.statusCode());
         System.out.println("Response body: " + response.body());
@@ -198,8 +220,7 @@ return  bookingsList;
 
     public String getPrice(Booking booking){
 
-
-        Gson gson = new GsonBuilder()
+   Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
                 .create();
         String json = gson.toJson(booking);
@@ -211,6 +232,7 @@ return  bookingsList;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/sendPriceData"))
                 .header("Content-Type", "application/json")
+               // .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
@@ -218,12 +240,19 @@ return  bookingsList;
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+int responseCode = response.statusCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Handle successful response
+                System.out.println("Data fetched successfully!");
+                // Process and display data...
+            } else {
+                // Handle non-200 response codes
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Błąd serwera, kod: "+ responseCode);
+            }
+        } catch (IOException | InterruptedException e) {
+           alertWindow.getServerConnectionError();
         }
-
         // Print response
         System.out.println("Response code for sending data: " + response.statusCode());
         System.out.println("Response body fsd: " + response.body());
@@ -234,14 +263,23 @@ return  bookingsList;
 
         HttpRequest request2 = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/getPrice"))
+               // .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
                 .build();
-        HttpResponse response2;
+        HttpResponse response2 = null;
         try {
             response2 = client2.send(request2, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+            int responseCode = response.statusCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Handle successful response
+                System.out.println("Data fetched successfully!");
+                // Process and display data...
+            } else {
+                // Handle non-200 response codes
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Błąd serwera, kod: "+ responseCode);
+            }
+        } catch (IOException | InterruptedException e) {
+            alertWindow.getServerConnectionError();
         }
         System.out.println("rspBod: " + response2.body());
         Gson gson2 = new GsonBuilder()
@@ -253,21 +291,24 @@ return  bookingsList;
         return price;
     }
     public List<AccType> loadAllAccTypes() throws IOException, InterruptedException {
-        List<AccType> accTypeList = new ArrayList<>();
-        HttpClient client = HttpClient.newBuilder()
-                .build();
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/types"))
-                .build();
-        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                .create();
-        Type listType = new TypeToken<List<AccType>>() {
-        }.getType();
-        accTypeList = gson.fromJson((String) response.body(), listType);
-        return accTypeList;
+            List<AccType> accTypeList = new ArrayList<>();
+            HttpClient client = HttpClient.newBuilder()
+                    .build();
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/types"))
+                  //  .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
+                    .build();
+            HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .create();
+            Type listType = new TypeToken<List<AccType>>() {
+            }.getType();
+            accTypeList = gson.fromJson((String) response.body(), listType);
+            return accTypeList;
 
     }
     public void updatePriceListToDataBase(List<PricePerType> pricePerTypeList) throws IOException, InterruptedException {
@@ -284,72 +325,105 @@ return  bookingsList;
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/updatePriceList"))
                 .header("Content-Type", "application/json")
+              //  .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .build();
 
         // Send the request and get the response
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        int responseCode = response.statusCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            // Handle successful response
+            System.out.println("Data fetched successfully!");
+            // Process and display data...
+        } else {
+            // Handle non-200 response codes
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Błąd serwera, kod: "+ responseCode);
+        }
 
-        // Print response
-        System.out.println("Response code: " + response.statusCode());
-        System.out.println("Response body: " + response.body());
     }
     public List<PricePeriod> loadAllPricePeriods() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newBuilder()
-                .build();
 
-List<PricePeriod> pricePeriodList = new ArrayList<>();
+            HttpClient client = HttpClient.newBuilder()
+                    .build();
 
-        HttpRequest request2 = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/periods"))
-                .build();
-        HttpResponse response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
-        Gson gson2 = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                .create();
-        Type listType2 = new TypeToken<List<PricePeriod>>() {
-        }.getType();
-        pricePeriodList = gson2.fromJson((String) response2.body(), listType2);
-return  pricePeriodList;
+            List<PricePeriod> pricePeriodList = new ArrayList<>();
+
+            HttpRequest request2 = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/periods"))
+                 //   .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
+                    .build();
+            HttpResponse response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
+            Gson gson2 = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .create();
+            Type listType2 = new TypeToken<List<PricePeriod>>() {
+            }.getType();
+            pricePeriodList = gson2.fromJson((String) response2.body(), listType2);
+            return pricePeriodList;
 
     }
     public List<PricePerType> loadAllPricePerType() throws IOException, InterruptedException {
-        HttpClient client = HttpClient.newBuilder()
-                .build();
 
-        List<PricePerType> pricePerTypeList;
-        HttpRequest request3 = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/getPrices"))
-                .build();
-        HttpResponse response3 = client.send(request3, HttpResponse.BodyHandlers.ofString());
-        Gson gson3 = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                .create();
-        Type listType3 = new TypeToken<List<PricePerType>>() {
-        }.getType();
-        pricePerTypeList = gson3.fromJson((String) response3.body(), listType3);
-return  pricePerTypeList;
+            HttpClient client = HttpClient.newBuilder()
+                    .build();
+
+            List<PricePerType> pricePerTypeList;
+            HttpRequest request3 = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/getPrices"))
+                 //   .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
+                    .build();
+            HttpResponse response3 = client.send(request3, HttpResponse.BodyHandlers.ofString());
+            Gson gson3 = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .create();
+            Type listType3 = new TypeToken<List<PricePerType>>() {
+            }.getType();
+            pricePerTypeList = gson3.fromJson((String) response3.body(), listType3);
+
+            return pricePerTypeList;
+
+
 
 
     }
     public Booking findBookingById(Integer id) throws IOException, InterruptedException {
-        String idS = id.toString();
-        HttpClient client = HttpClient.newBuilder()
-                .build();
-        Booking booking;
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/getBookingById?id=" + id))
-                .build();
-        System.out.println(request);
-        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        Gson gson = new GsonBuilder()
-                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
-                .create();
-        System.out.println(response.body());
-        Type type = new TypeToken<Booking>(){}.getType();
-        booking = gson.fromJson((String) response.body(), type);
-        System.out.println(booking.toString());
-        return booking;
+        try {
+            String idS = id.toString();
+            HttpClient client = HttpClient.newBuilder()
+                    .build();
+            Booking booking;
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/getBookingById?id=" + id))
+                  //  .header("Authorization", "Bearer " + API_KEY) // Add the API key in the Authorization header
+                    .build();
+            System.out.println(request);
+            HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            int responseCode = response.statusCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // Handle successful response
+                System.out.println("Data fetched successfully!");
+                // Process and display data...
+            } else {
+                // Handle non-200 response codes
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("Błąd serwera, kod: "+ responseCode);
+            }
+
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .create();
+            System.out.println(response.body());
+            Type type = new TypeToken<Booking>() {
+            }.getType();
+            booking = gson.fromJson((String) response.body(), type);
+            System.out.println(booking.toString());
+            return booking;
+        }catch (IOException e){
+
+        }
+        return null;
 
 
 

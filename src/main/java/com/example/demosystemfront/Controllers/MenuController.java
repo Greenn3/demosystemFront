@@ -1,27 +1,27 @@
 package com.example.demosystemfront.Controllers;
 
+import com.example.demosystemfront.AlertWindow;
 import com.example.demosystemfront.ApiService;
 import com.example.demosystemfront.Entities.Booking;
-import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.HBox;
-import javafx.util.Duration;
-
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MenuController {
     private Stage primaryStage;
-    ApiService api = new ApiService();
+    AlertWindow alertWindow = new AlertWindow();
+   // ApiService api = new ApiService();
     // Helper method to create VBox with Labels for each item in the list
     VBox createLabelVBox(String headerText, List<String> items) {
         VBox vbox = new VBox(5);
@@ -84,28 +84,58 @@ public VBox quickView(Booking booking){
         });
 
         buttonPanel.getChildren().addAll(scene1Button, scene2Button, scene3Button);
-        buttonPanel.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+      //  buttonPanel.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        buttonPanel.getStylesheets().add(getClass().getResource("/newStyle.css").toExternalForm());
 
         // Right panel for dynamic content
         VBox contentPanel = new VBox();
         VBox.setVgrow(contentPanel, Priority.ALWAYS);
 
-
+// Dzisiaj i jutro
         // Helper method to create VBox with Labels for each item in the list
+//api calls
+        List<Booking> todayArrivals = new ArrayList<>();
+        List<Booking> todayDepartures  = new ArrayList<>();
+        List<Booking> tomorrowArrivals  = new ArrayList<>();
+        List<Booking> tomorrowDepartures  = new ArrayList<>();
+//        todayArrivals = api.findReservationsByArrivalDate(LocalDate.now());
+//        todayDepartures = api.findReservationsByDepartureDate(LocalDate.now());
+//        tomorrowArrivals = api.findReservationsByArrivalDate(LocalDate.now().plusDays(1));
+//        tomorrowDepartures = api.findReservationsByDepartureDate(LocalDate.now().plusDays(1));
 
+
+//        if(todayArrivals.isEmpty() & todayDepartures.isEmpty() & tomorrowArrivals.isEmpty() & tomorrowDepartures.isEmpty()){
+//           Alert alert = new Alert(Alert.AlertType.INFORMATION);
+//           alert.setContentText("Brak danych");
+//           alert.show();
+//        }
+
+Button refreshButton = new Button("Odśwież");
+refreshButton.setOnAction(new EventHandler<ActionEvent>() {
+    @Override
+    public void handle(ActionEvent event) {
+        try {
+            createContent();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+});
 
         // Header and Labels for "DZISIAJ"
         Label dzisiajHeader = new Label("DZISIAJ");
 
-        List<Booking> todayArrivals = api.findReservationsByArrivalDate(LocalDate.now());
+
        // VBox dzisiajPrzyjazdyBox = createLabelVBox("PRZYJAZDY", List.of(todayArrivals.toString()));
-VBox dzisiajPrzyjazdyBox = new VBox(20);
-for(Booking booking : todayArrivals){
+    VBox dzisiajPrzyjazdyBox = new VBox(20);
+    for(Booking booking : todayArrivals){
     dzisiajPrzyjazdyBox.getChildren().add(quickView(booking));
 }
-        List<Booking> todayDepartures = api.findReservationsByDepartureDate(LocalDate.now());
+
       //  VBox dzisiajWyjazdyBox = createLabelVBox("WYJAZDY", List.of(todayDepartures.toString()));
-VBox dzisiajWyjazdyBox = new VBox(20);
+    VBox dzisiajWyjazdyBox = new VBox(20);
         for(Booking booking : todayDepartures){
             dzisiajWyjazdyBox.getChildren().add(quickView(booking));
         }
@@ -119,13 +149,13 @@ VBox dzisiajWyjazdyBox = new VBox(20);
         // Header and Labels for "JUTRO"
         Label jutroHeader = new Label("JUTRO");
 
-        List<Booking> tomorrowArrivals = api.findReservationsByArrivalDate(LocalDate.now().plusDays(1));
+
       //  VBox jutroPrzyjazdyBox = createLabelVBox("PRZYJAZDY", List.of(tomorrowArrivals.toString()));
 VBox jutroPrzyjazdyBox = new VBox();
 for(Booking booking : tomorrowArrivals){
     jutroPrzyjazdyBox.getChildren().add(quickView(booking));
 }
-        List<Booking> tomorrowDepartures = api.findReservationsByDepartureDate(LocalDate.now().plusDays(1));
+
        // VBox jutroWyjazdyBox = createLabelVBox("WYJAZDY", List.of(tomorrowDepartures.toString()));
 VBox jutroWyjazdyBox = new VBox();
 for(Booking booking : tomorrowDepartures){
@@ -141,7 +171,9 @@ for(Booking booking : tomorrowDepartures){
         VBox.setVgrow(dzisiajContainer, Priority.ALWAYS);
         VBox.setVgrow(jutroContainer, Priority.ALWAYS);
 
-        contentPanel.getChildren().addAll(dzisiajContainer, jutroContainer);
+
+        // Dodawanie elementów do widoku
+        contentPanel.getChildren().addAll(refreshButton, dzisiajContainer, jutroContainer);
 
 
 
@@ -153,7 +185,8 @@ for(Booking booking : tomorrowDepartures){
 
         // Wrap in a scene
         Scene scene = new Scene(splitPane, 800, 600);
-        scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+       // scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("/newStyle.css").toExternalForm());
 
         return scene;
     }
