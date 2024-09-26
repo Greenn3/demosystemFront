@@ -21,7 +21,7 @@ import java.util.List;
 public class MenuController {
     private Stage primaryStage;
     AlertWindow alertWindow = new AlertWindow();
-   // ApiService api = new ApiService();
+    ApiService api = new ApiService();
     // Helper method to create VBox with Labels for each item in the list
     VBox createLabelVBox(String headerText, List<String> items) {
         VBox vbox = new VBox(5);
@@ -83,7 +83,13 @@ public VBox quickView(Booking booking){
             primaryStage.setScene(priceListViewController.createContent());
         });
 
-        buttonPanel.getChildren().addAll(scene1Button, scene2Button, scene3Button);
+        Button scene4Button = new Button("Wyszukaj rezerwację");
+        scene4Button.setOnAction(e ->{
+          FindBookingControler findBookingControler = new FindBookingControler(primaryStage);
+          primaryStage.setScene(findBookingControler.createContent());
+        });
+
+        buttonPanel.getChildren().addAll(scene1Button, scene2Button, scene3Button, scene4Button);
       //  buttonPanel.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         buttonPanel.getStylesheets().add(getClass().getResource("/newStyle.css").toExternalForm());
 
@@ -98,17 +104,12 @@ public VBox quickView(Booking booking){
         List<Booking> todayDepartures  = new ArrayList<>();
         List<Booking> tomorrowArrivals  = new ArrayList<>();
         List<Booking> tomorrowDepartures  = new ArrayList<>();
-//        todayArrivals = api.findReservationsByArrivalDate(LocalDate.now());
-//        todayDepartures = api.findReservationsByDepartureDate(LocalDate.now());
-//        tomorrowArrivals = api.findReservationsByArrivalDate(LocalDate.now().plusDays(1));
-//        tomorrowDepartures = api.findReservationsByDepartureDate(LocalDate.now().plusDays(1));
+        todayArrivals = api.findReservationsByArrivalDate(LocalDate.now());
+        todayDepartures = api.findReservationsByDepartureDate(LocalDate.now());
+        tomorrowArrivals = api.findReservationsByArrivalDate(LocalDate.now().plusDays(1));
+        tomorrowDepartures = api.findReservationsByDepartureDate(LocalDate.now().plusDays(1));
 
 
-//        if(todayArrivals.isEmpty() & todayDepartures.isEmpty() & tomorrowArrivals.isEmpty() & tomorrowDepartures.isEmpty()){
-//           Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//           alert.setContentText("Brak danych");
-//           alert.show();
-//        }
 
 Button refreshButton = new Button("Odśwież");
 refreshButton.setOnAction(new EventHandler<ActionEvent>() {
