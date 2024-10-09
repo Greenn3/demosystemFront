@@ -4,11 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bf3d110-5d1f-4751-a71b-10b656a49409" name="Changes" comment="added error messages in case of server connection error">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/FindBookingControler.java" afterDir="false" />
+    <list default="true" id="1bf3d110-5d1f-4751-a71b-10b656a49409" name="Changes" comment="new scene to find booking by id, name, date etc.">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/DejaVuLGCSerif-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/DejaVuLGCSerif.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/header.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/ApiService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/ApiService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/BookingInfoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/BookingInfoController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/CalendarViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/CalendarViewController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/FindBookingControler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/FindBookingControler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Entities/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Entities/Booking.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/HelperPDF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/HelperPDF.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/newStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/newStyle.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,42 +70,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Downloaded.Files.Path.Enabled": "false",
-    "Repository.Attach.Annotations": "true",
-    "Repository.Attach.JavaDocs": "true",
-    "Repository.Attach.Sources": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/Asia/IdeaProjects/demosystemFront/src/main/resources",
-    "list.type.of.created.stylesheet": "CSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.5367816",
-    "settings.editor.selected.configurable": "editor.preferences.appearance",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asia/IdeaProjects/demosystemFront/src/main/resources&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.5367816&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.appearance&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Asia\IdeaProjects\demosystemFront\src\main\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Asia\IdeaProjects\demosystemFront\src\main\java\com\example\demosystemfront" />
       <recent name="C:\Users\Asia\IdeaProjects\demosystemFront\src\main\resources" />
+      <recent name="C:\Users\Asia\IdeaProjects\demosystemFront\src\main\java\com\example\demosystemfront" />
       <recent name="C:\Users\Asia\IdeaProjects\demosystemFront\src\main\resources\com\example\demosystemfront" />
     </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
@@ -113,7 +125,7 @@
       <module name="demosystemFront.main" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.example.demosystemfront.Controllers.*" />
+          <option name="PATTERN" value="com.example.demosystemfront.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -156,7 +168,7 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="demosystemFront [dependentComponents]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="demosystemFront [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -167,7 +179,51 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="dependentComponents" />
+            <option value="jar" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="demosystemFront [prepareMergedJarsDir]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="prepareMergedJarsDir" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
+    <configuration name="demosystemFront [prepareModulesDir]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="prepareModulesDir" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -224,9 +280,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.demosystemFront [dependentComponents]" />
-        <item itemvalue="Gradle.demosystemFront [run]" />
         <item itemvalue="Application.HelloApplication" />
+        <item itemvalue="Gradle.demosystemFront [run]" />
+        <item itemvalue="Gradle.demosystemFront [jar]" />
+        <item itemvalue="Gradle.demosystemFront [prepareModulesDir]" />
+        <item itemvalue="Gradle.demosystemFront [prepareMergedJarsDir]" />
       </list>
     </recent_temporary>
   </component>
@@ -277,7 +335,9 @@
       <workItem from="1726506341309" duration="18901000" />
       <workItem from="1726741299936" duration="7295000" />
       <workItem from="1726763716993" duration="3845000" />
-      <workItem from="1727291425005" duration="7671000" />
+      <workItem from="1727291425005" duration="15154000" />
+      <workItem from="1727958055307" duration="22543000" />
+      <workItem from="1728494614125" duration="4630000" />
     </task>
     <task id="LOCAL-00001" summary="-">
       <option name="closed" value="true" />
@@ -311,11 +371,30 @@
       <option name="project" value="LOCAL" />
       <updated>1726764927171</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="new scene to find booking by id, name, date etc.">
+      <option name="closed" value="true" />
+      <created>1727377480294</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1727377480294</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -333,7 +412,8 @@
     <MESSAGE value="czas na ulepszanie" />
     <MESSAGE value="improving a few features" />
     <MESSAGE value="added error messages in case of server connection error" />
-    <option name="LAST_COMMIT_MESSAGE" value="added error messages in case of server connection error" />
+    <MESSAGE value="new scene to find booking by id, name, date etc." />
+    <option name="LAST_COMMIT_MESSAGE" value="new scene to find booking by id, name, date etc." />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

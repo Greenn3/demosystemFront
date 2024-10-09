@@ -5,6 +5,7 @@ package com.example.demosystemfront.Entities;
 
 
 import com.example.demosystemfront.Entities.AccType;
+import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -27,6 +28,32 @@ public class Booking {
    public Double discount;
 
 
+    private String phone;
+    private String email;
+    private boolean hasArrived = false;
+    @SerializedName("isPaid")
+    public boolean isPaid = false;
+    private boolean hasLeft = false;
+
+
+
+    public Booking(Integer id, String name, LocalDate arrivalDate, LocalDate departureDate, AccType accType, String info, Double discount, Boolean isPaid, Boolean hasArrived, String phone, String email, boolean hasArrived1, boolean isPaid1, boolean hasLeft) {
+        this.id = id;
+        this.name = name;
+        this.arrivalDate = arrivalDate;
+        this.departureDate = departureDate;
+        this.accType = accType;
+        this.info = info;
+        this.discount = discount;
+        this.isPaid = isPaid;
+        this.hasArrived = hasArrived;
+        this.phone = phone;
+        this.email = email;
+        this.hasArrived = hasArrived1;
+        this.isPaid = isPaid1;
+        this.hasLeft = hasLeft;
+
+    }
 
     public String getInfo() {
         return info;
@@ -60,11 +87,6 @@ public class Booking {
         this.email = email;
     }
 
-    private String phone;
-    private String email;
-    private boolean hasArrived = false;
-    private boolean isPaid = false;
-    private boolean hasLeft = false;
 
     public Booking() {
     }

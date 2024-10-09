@@ -9,39 +9,26 @@ import com.calendarfx.view.popover.EntryPopOverContentPane;
 import com.example.demosystemfront.ApiService;
 
 import com.example.demosystemfront.Entities.Booking;
+import com.example.demosystemfront.HelperPDF;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import org.apache.pdfbox.pdmodel.PDDocument;
-import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
-
-import com.calendarfx.view.WeekDayHeaderView;
-import javafx.scene.control.Label;
-
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 
@@ -50,7 +37,7 @@ public class CalendarViewController {
     public List<Booking> bookingsList;
     public Calendar bookings = new Calendar("Bookings");
     ApiService apiService = new ApiService();
-
+public HelperPDF helperPDF = new HelperPDF();
     public CalendarViewController(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -72,7 +59,7 @@ public class CalendarViewController {
         textFieldName2.setText(pop.getEntry().getId());
         textFieldArrivalDate.setText("data przyjazdu: " + pop.getEntry().getStartDate().toString());
         textFieldDepartureDate.setText("data wyjazdu: " + pop.getEntry().getEndDate().toString());
-String id = pop.getEntry().getId();
+        String id = pop.getEntry().getId();
         Label labelId = new Label();
         label.setText(pop.getEntry().getId());
 
@@ -84,14 +71,30 @@ String id = pop.getEntry().getId();
                     BookingInfoController bookingInfoController = new BookingInfoController(primaryStage);
                     primaryStage.setScene(bookingInfoController.createContent(Integer.parseInt(pop.getEntry().getId())));
                 }
-                );
+        );
 
         Button buttonGeneratePDF = new Button();
+
         buttonGeneratePDF.setText("PDF");
         buttonGeneratePDF.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-        generatePDF(id);
+                System.out.println(id);
+                Booking booking = null;
+                for (Booking b : bookingsList) {
+                    System.out.println(b.toString());
+                    if (b.getId().equals(Integer.valueOf(id))) {
+                        booking = b;
+                        System.out.println(b.toString());
+
+                    }
+                    else{
+                        //make alert window
+                    }
+                }
+                // helperPDF.generateConfirmationPDF(booking, primaryStage);
+                helperPDF.generateInvoicePDF(booking, primaryStage);
+
             }
         });
 
@@ -102,7 +105,7 @@ String id = pop.getEntry().getId();
 
     protected VBox showBookingScreen() throws IOException {
 
-       // WeekDayHeaderView headerView = new WeekDayHeaderView(7);
+        // WeekDayHeaderView headerView = new WeekDayHeaderView(7);
 
         // header format
         DateTimeFormatter numericDateFormatter = DateTimeFormatter.ofPattern("dd-MM");
@@ -118,7 +121,7 @@ String id = pop.getEntry().getId();
             }
         });
 
-       // headerView.getCellFactory();
+        // headerView.getCellFactory();
 
 
 
@@ -229,19 +232,19 @@ String id = pop.getEntry().getId();
         stage.setWidth(700);
         stage.setHeight(500);
         stage.centerOnScreen();
-       // stage.show();
+        // stage.show();
 
         return vBox;
     }
 
     public Scene createContent() throws IOException, URISyntaxException, InterruptedException {
         VBox layout = new VBox(10);
-       // layout.setStyle("-fx-background-color: lightcoral");
+        // layout.setStyle("-fx-background-color: lightcoral");
 //back button
         Button backButton = new Button("<");
         backButton.setOnAction(e -> {
             MenuController menuScene = new MenuController(primaryStage);
-          //  primaryStage.setScene(new Scene(menuScene.createContent(), 400, 300));
+            //  primaryStage.setScene(new Scene(menuScene.createContent(), 400, 300));
             try {
                 primaryStage.setScene(menuScene.createContent());
             } catch (IOException ex) {
@@ -250,103 +253,51 @@ String id = pop.getEntry().getId();
                 throw new RuntimeException(ex);
             }
         });
-
-
         bookingsList = apiService.loadAllReservations();
+      Label label = new Label("Wygeneruj zestawienie od - do");
+
+MenuBar menuBar = new MenuBar();
+        Menu viewMenu = new Menu("Rodzaj pliku:");
+
+        // Create RadioMenuItems
+        RadioMenuItem pdf = new RadioMenuItem("PDF");
+        RadioMenuItem csv = new RadioMenuItem("CSV");
+
+        // Add them to a ToggleGroup
+        ToggleGroup viewGroup = new ToggleGroup();
+        pdf.setToggleGroup(viewGroup);
+        csv.setToggleGroup(viewGroup);
+        viewMenu.getItems().addAll(pdf, csv);
+menuBar.getMenus().add(viewMenu);
+DatePicker from = new DatePicker();
+DatePicker to = new DatePicker();
+List<Booking> selectedBookings = new ArrayList<>();
+
+Button generate  = new Button("Generuj");
+generate.setOnAction(event -> {
+    for(Booking b : bookingsList){
+        if ((b.arrivalDate.isAfter(from.getValue()) || b.arrivalDate.equals(from.getValue())) && (b.departureDate.isBefore(to.getValue())|| b.departureDate.equals(to.getValue()))){
+            selectedBookings.add(b);
+        }
+    }
+    helperPDF.generateDocument(selectedBookings, primaryStage);
+});
+VBox generationVbox = new VBox(5,label, menuBar, from, to, generate);
+
+
+
+
+      //  helperPDF.generateDocumentXML(bookingsList, primaryStage);
         showBookingScreen();
         VBox vBoxCalendar = showBookingScreen();
-        layout.getChildren().add(backButton);
-        layout.getChildren().add(vBoxCalendar);
+
+        layout.getChildren().addAll(backButton, vBoxCalendar,generationVbox );
         //layout.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
 
         layout.getStylesheets().add(getClass().getResource("/newStyle.css").toExternalForm());
         return new Scene(layout, 900, 700);
     }
 
-    public void generatePDF(String idS){
-        int id = Integer.parseInt(idS);
-        Booking booking = null;
-        for (Booking b : bookingsList) {
-            if (b.getId() == id) booking = b;
-        }
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save PDF");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
-        File file = fileChooser.showSaveDialog(primaryStage);
-
-        if (file != null) {
-            try (PDDocument document = new PDDocument()) {
-                PDPage page = new PDPage();
-                document.addPage(page);
-
-                PDPageContentStream contentStream = new PDPageContentStream(document, page);
-
-                // Ensure the image paths are correct and accessible
-               // String logoPath = getClass().getResource("/logo.png").getPath();
-              //  String bgImagePath = getClass().getResource("/background.png").getPath();
-
-                // Load the logo image
-               // PDImageXObject logo = PDImageXObject.createFromFile(logoPath, document);
-              //  contentStream.drawImage(logo, 50, 700, 100, 100);
-
-                // Set background graphics
-              //  PDImageXObject bgImage = PDImageXObject.createFromFile(bgImagePath, document);
-               // contentStream.drawImage(bgImage, 0, 0, page.getMediaBox().getWidth(), page.getMediaBox().getHeight());
-
-                // Add confirmation header
-                contentStream.beginText();
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 20);
-                contentStream.newLineAtOffset(50, 650);
-                contentStream.showText("Potwierdzenie rezerwacji");
-                contentStream.endText();
-
-                // Add booking details
-                contentStream.beginText();
-                contentStream.setFont(PDType1Font.HELVETICA, 12);
-                contentStream.newLineAtOffset(50, 600);
-                contentStream.showText("Nazwisko: " + booking.getName());
-
-                contentStream.newLineAtOffset(0, -20);
-                contentStream.showText("Rodzaj noclegu: " + booking.getAccType().getName());
-
-                contentStream.newLineAtOffset(0, -20);
-                contentStream.showText("Data przyjazdu: " + booking.getArrivalDate().toString());
-
-                contentStream.newLineAtOffset(0, -20);
-                contentStream.showText("Data wyjazdu: " + booking.getDepartureDate().toString());
-
-                contentStream.newLineAtOffset(0, -20);
-                contentStream.showText("Numer telefonu: " + booking.getPhone());
-
-                contentStream.newLineAtOffset(0, -20);
-                contentStream.showText("Adres email: " + booking.getEmail());
-
-                contentStream.newLineAtOffset(0, -20);
-                contentStream.showText("Dodatkowe informacje: " + booking.getInfo());
-
-                contentStream.newLineAtOffset(0, -20);
-                contentStream.showText("Cena: " + apiService.getPrice(booking).toString() + " PLN");
-
-                contentStream.endText();
-                contentStream.close();
-
-                // Save the document after adding content
-                document.save(file);
-                System.out.println("PDF created successfully");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-
-    }
-    private void drawTextWithLineFeed(PDPageContentStream contentStream, String text) throws IOException {
-        String[] lines = text.split("\n");
-        for (String line : lines) {
-            contentStream.showText(line);
-            contentStream.newLineAtOffset(0, -20); // Adjust spacing between lines as needed
-        }
-    }
 
 
 }

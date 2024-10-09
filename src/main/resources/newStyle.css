@@ -65,3 +65,13 @@
     -fx-border-width: 1;
     -fx-border-color: #E8E8E8 transparent transparent transparent;
 }
+
+.toggle-button {
+    -fx-background-color: lightgray;
+    -fx-text-fill: black;
+}
+
+.toggle-button:selected {
+    -fx-background-color: green;
+    -fx-text-fill: white;
+}

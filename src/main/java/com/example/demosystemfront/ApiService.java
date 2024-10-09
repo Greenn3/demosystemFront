@@ -189,6 +189,7 @@ return List.of();
                 .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
                 .create();
         String json = gson.toJson(booking);
+        System.out.println("json: " + json);
         HttpClient client = HttpClient.newBuilder()
                 .build();
         System.out.println(booking);
@@ -214,6 +215,7 @@ return List.of();
         // Print response
         System.out.println("Response code: " + response.statusCode());
         System.out.println("Response body: " + response.body());
+        System.out.println(booking.isPaid);
     }
 
     public String getPrice(Booking booking){

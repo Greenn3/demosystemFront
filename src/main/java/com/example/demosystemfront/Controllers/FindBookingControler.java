@@ -85,6 +85,16 @@ public class FindBookingControler {
                 resultLabel, bookingList
         );
 
+        bookingList.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2) {  // Double-click to handle selection
+                Booking selectedBooking = bookingList.getSelectionModel().getSelectedItem();
+                if (selectedBooking != null) {
+                   BookingInfoController bookingInfoController = new BookingInfoController(primaryStage);
+                   primaryStage.setScene(bookingInfoController.createContent(selectedBooking.getId()));
+                }
+            }
+        });
+
         Scene scene = new Scene(layout, 1000, 400);
         return scene;
     }

@@ -30,7 +30,7 @@ application {
 }
 
 javafx {
-    version = '17.0.6'
+    version = '17'
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
@@ -41,11 +41,17 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 
     implementation group: 'com.calendarfx', name: 'view', version: '11.12.6'
+
+
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     implementation 'org.apache.pdfbox:pdfbox:2.0.24'
 
 
-
+//    implementation 'org.apache.poi:poi:5.2.3' // For .xls files
+//    implementation 'org.apache.poi:poi-ooxml:5.2.3' // For .xlsx files
+//    implementation 'org.apache.xmlbeans:xmlbeans:5.1.1' // Needed for .xlsx support
+//    implementation 'org.apache.commons:commons-collections4:4.4' // Optional, but good to have
+//    implementation 'org.apache.commons:commons-math3:3.6.1' // Optional, but good to have
 }
 
 test {
