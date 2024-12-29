@@ -25,7 +25,7 @@ public class Booking {
 
    private String info;
 
-   public Double discount;
+   public Double discount = 0.0;
 
 
     private String phone;
@@ -35,9 +35,23 @@ public class Booking {
     public boolean isPaid = false;
     private boolean hasLeft = false;
 
+    public boolean isHasArrived() {
+        return hasArrived;
+    }
 
+    public void setHasArrived(boolean hasArrived) {
+        this.hasArrived = hasArrived;
+    }
 
-    public Booking(Integer id, String name, LocalDate arrivalDate, LocalDate departureDate, AccType accType, String info, Double discount, Boolean isPaid, Boolean hasArrived, String phone, String email, boolean hasArrived1, boolean isPaid1, boolean hasLeft) {
+    public boolean isHasLeft() {
+        return hasLeft;
+    }
+
+    public void setHasLeft(boolean hasLeft) {
+        this.hasLeft = hasLeft;
+    }
+
+    public Booking(Integer id, String name, LocalDate arrivalDate, LocalDate departureDate, AccType accType, String info, Double discount, Boolean isPaid, Boolean hasArrived, String phone, String email, Boolean hasLeft) {
         this.id = id;
         this.name = name;
         this.arrivalDate = arrivalDate;
@@ -49,10 +63,7 @@ public class Booking {
         this.hasArrived = hasArrived;
         this.phone = phone;
         this.email = email;
-        this.hasArrived = hasArrived1;
-        this.isPaid = isPaid1;
         this.hasLeft = hasLeft;
-
     }
 
     public String getInfo() {

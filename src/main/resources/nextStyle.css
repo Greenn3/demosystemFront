@@ -1,0 +1,417 @@
+/*menu*/
+.menu-panel{
+    -fx-pref-width: 250;
+    -fx-background-color: radial-gradient(center 90% 60%, radius 90%, #96a7cb 20%, #3268b0 90%);;
+   /*-fx-border-color: transparent rgba(53, 222, 215, 0.67) transparent transparent;*/
+    -fx-border-width: 0 3px 0 0; /* Bottom border: 2px */
+    -fx-border-style: solid;
+    -fx-border-color: transparent rgba(33, 36, 49, 0.44) transparent transparent;
+
+    -fx-padding: 40 0 20 20;
+    -fx-effect: dropshadow(gaussian, #212431, 10, 0.2, 5, 5);
+    -fx-spacing: 30;
+
+}
+
+.menu-panel-button{
+    -fx-background-color: #214069;
+
+    -fx-font-size: 18px;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-text-fill: white;
+    -fx-pref-width: 200;
+    -fx-pref-height: 50;
+    -fx-effect: dropshadow(gaussian, #212431, 10, 0.2, 5, 5);
+    /*-fx-border-color: rgba(115, 255, 243, 0.67);*/
+    -fx-background-radius: 10;
+    font-weight: bold;
+
+}
+.button:hover {
+    -fx-background-color: #292f42;
+}
+
+/*.main-pane{*/
+/*    !*-fx-background-color: rgba(205, 243, 242, 0.52);*!*/
+/*    -fx-background-color: rgba(255, 255, 255, 0.53);*/
+
+
+/*}*/
+
+/*top panel*/
+.top-panel-label-label{
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-color: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10;
+}
+.top-panel{
+   -fx-background-color: #212431;
+    -fx-pref-height: 50;
+    -fx-padding: 0 20;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+
+}
+.top-panel-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-color: white;
+    -fx-font-size: 14px;
+-fx-padding: 10;
+
+}
+
+.top-panel-label-green{
+-fx-background-color: #82d282;
+    -fx-text-fill: #034603;
+}
+.top-panel-label-red{
+-fx-background-color: #ff7f7f;
+    -fx-text-fill: #ff0000;
+
+}
+/*top panel end*/
+
+
+/*START*/
+/*main page*/
+.scroll-pane-main .viewport{
+    -fx-background-color: rgba(255, 255, 255, 0.42);
+    -fx-max-width: 400;
+}
+.scroll-pane-main{
+    -fx-max-width: 800;
+}
+.booking-box {
+    /* Your styles here */
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-pref-width: 600;
+-fx-background-color: rgba(255, 255, 255, 0);
+    -fx-pref-height: 350;
+}
+/*.scroll-pane-add{*/
+/*    -fx-max-width: 400;*/
+/*    -fx-border-color: magenta;*/
+/*}*/
+.booking-box > Label{
+    -fx-alignment: center;
+-fx-pref-width: 500;
+    -fx-font-size: 18px;
+    -fx-text-fill: black;
+    -fx-border-color: black;
+    -fx-padding: 10,30,10,30;
+}
+
+.quick-view-card{
+   -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-radius: 5;
+-fx-background-radius: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 1);
+    -fx-max-width: 200;
+    -fx-padding: 10;
+    -fx-text-alignment: left;
+    -fx-font-size: 14;
+    -fx-spacing: 5;
+
+}
+
+.quick-view-card-unpaid{
+    -fx-background-color: orange;
+    -fx-border-color: red;
+    -fx-border-width: 2;
+}
+.quick-view-card-arrived{
+    -fx-background-color: #389a38;
+}
+.quick-view-card-left{
+    -fx-background-color: #602b2b;
+}
+.quick-view-card-not-left{
+    -fx-background-color: #b44b4b;
+}
+.quick-view-card-not-arrived{
+   -fx-background-color: #7dc27d;
+}
+.unpaid-warning{
+    -fx-font-size: 16;
+    -fx-border-color: yellow;
+    -fx-border-width: 2;
+}
+.inner-grid{
+    -fx-padding: 10;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+
+}
+.card-more-info{
+    -fx-font-size: 10;
+}
+.scroll-pane .viewport {
+    -fx-background-color: #fff;
+}
+.smaller-box-home{
+    -fx-background-color: rgba(255, 255, 255, 0.60);
+    -fx-pref-width: 600;
+    -fx-pref-height: 850;
+    -fx-padding: 10,20,10,20;
+    -fx-alignment: top-center;
+}
+/*END*/
+/*main page*/
+
+/* STRART
+add booking screen*/
+.form-column > Label{
+    -fx-alignment: left;
+}
+.form-column{
+    -fx-padding: 10;
+    -fx-spacing: 10;
+
+    -fx-border-color: #434380;
+    -fx-border-width: 1;
+    -fx-pref-width: 300;
+    -fx-max-width: 300;
+}
+.form-column-info{
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-alignment: center;
+    -fx-border-color: #434380;
+    -fx-border-width: 1;
+    -fx-pref-width: 400;
+
+}
+.success-info{
+    -fx-text-fill: green;
+}
+.error-info{
+    -fx-text-fill: red;
+}
+.error{
+    -fx-background-color: rgba(206, 42, 42, 0.45);
+}
+
+.full-layout{
+    -fx-background-color: rgba(255, 255, 255,0.80);
+
+}
+/*END*/
+/*add booking screen*!*/
+
+
+/*START*/
+/*price list*/
+
+.price-list-grid{
+    -fx-border-color: rgba(77, 89, 94, 0.55);
+    -fx-border-width: 4;
+    -fx-background-color: rgba(128, 128, 128, 0.44);
+    -fx-padding: 10;
+    -fx-alignment: center;
+}
+.layout-price-list{
+    -fx-background-color: rgba(255, 255, 255, 0.72);
+    -fx-padding: 20;
+    -fx-spacing: 20;
+    -fx-alignment: center;
+}
+
+.space{
+    visibility: hidden;
+}
+
+.price-list-box{
+    -fx-border-color: rgba(33, 64, 105, 0.76);
+    -fx-border-width: 2;
+    -fx-pref-width: 120;
+}
+.price-list-box >TextField{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-padding: 5;
+    -fx-font-size: 15;
+
+}
+.price-list-header > TextField{
+    -fx-pref-width: 120;
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+.price-list-left-header{
+    -fx-border-color: rgba(62, 96, 152, 0.6);
+    -fx-spacing: 10;
+    -fx-padding: 2;
+    -fx-pref-width: 120;
+}
+.price-list-left-header > TextField{
+
+    -fx-spacing: 20;
+    -fx-padding: 2;
+    -fx-pref-width: 120;
+}
+.price-list-header{
+    -fx-border-color: rgba(62, 96, 152, 0.6);
+    -fx-spacing: 5;
+    -fx-padding: 2;
+}
+.price{
+    -fx-font-size: 17;
+    -fx-alignment: center-right;
+}
+.currency{
+    -fx-alignment: center-left;
+    -fx-font-size: 17;
+}
+
+/*END*/
+/*price list*/
+
+
+/*START*/
+/*booking info screen*/
+
+.controls-hbox{
+    -fx-spacing: 20;
+    -fx-border-color: black;
+    -fx-padding: 10;
+    -fx-background-color: #c4944b;
+}
+.controls-hbox > CheckBox{
+    -fx-font-size: 14;
+    -fx-text-fill: black;
+    -fx-border-color: black;
+
+}
+.info-header-hbox{
+    -fx-spacing: 10;
+}
+.info-header-hbox > Button{
+    -fx-max-width: 200px;
+    -fx-font-size: 10px;
+}
+.info-header-hbox >ToggleButton{
+    -fx-max-width: 200px;
+    -fx-font-size: 10px;
+}
+.info-header-hbox > MenuButton{
+    -fx-max-width: 200px;
+    -fx-font-size: 10px;
+}
+.main-columns-grid{
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+.main-container{
+    -fx-background-color: white;
+    -fx-padding: 20;
+}
+.delete-button{
+    -fx-background-color: #ab4545;
+}
+/*END*/
+/*booking info screen*/
+
+
+
+/*START */
+/*find booking screen*/
+
+.find-booking-view{
+
+    -fx-background-color: rgba(255, 255, 255, 0.8);
+    -fx-max-width: 900;
+    -fx-max-height: 400;
+    -fx-padding: 20;
+}
+
+/*END*/
+/*find booking screen*/
+
+/*START*/
+/*shared*/
+.smaller-box{
+    -fx-background-color: rgba(255, 255, 255, 0.60);
+    -fx-pref-width: 600;
+    -fx-pref-height: 850;
+    -fx-padding: 50;
+    -fx-content-display: center;
+    -fx-alignment: top-center;
+}
+
+.cover{
+    -fx-background-image: url("\background-watercolor.jpeg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 100%;
+}
+.button-save{
+    -fx-padding: 10;
+    -fx-border-color: #214069;
+    -fx-text-fill: white;
+    -fx-background-color: #18427e;
+    -fx-translate-x: 20;
+}
+button-save:hover{
+    -fx-background-color: #3c4050;
+    -fx-text-fill: white;
+}
+/*END*/
+/*shared*/
+
+/*START*/
+/*calendar screen*/
+.smaller-box-cal{
+    -fx-background-color: rgba(255, 255, 255, 0.60);
+    -fx-pref-width: 600;
+    -fx-pref-height: 850;
+    -fx-padding: 20;
+    -fx-content-display: center;
+    -fx-alignment: left;
+}
+.calendar-box{
+    -fx-alignment: top-left;
+    -fx-max-width: 1000;
+    -fx-background-color: white;
+    -fx-padding: 10;
+}
+.calendar-layout{
+    -fx-background-color: rgba(255, 255, 255, 0.25);
+    -fx-spacing: 20;
+    -fx-alignment: center-left;
+}
+.generation-vbox{
+    -fx-alignment: left;
+
+    -fx-background-color: white;
+    -fx-pref-width: 1020;
+    -fx-padding: 10;
+    -fx-spacing: 10;
+
+}
+.generation-vbox > MenuBar{
+
+    -fx-border-color: #214069;
+    -fx-text-fill: black;
+    -fx-background-color: white;
+    -fx-max-width: 150;
+    -fx-font-size: 12;
+
+}
+/*.generation-vbox > Button{*/
+/*    -fx-padding: 10;*/
+/*    -fx-border-color: #214069;*/
+/*    -fx-text-fill: white;*/
+/*    -fx-background-color: #18427e;*/
+/*    -fx-translate-x: 20;*/
+/*}*/
+/*END*/
+/*calendar screen*/
+

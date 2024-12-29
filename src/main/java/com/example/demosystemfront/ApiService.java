@@ -37,7 +37,7 @@ public class ApiService {
 
 AlertWindow alertWindow = new AlertWindow();
 
-    private static final String API_KEY = "yoursecureapikey"; // Replace with your API key
+
 private static final String key = "rjfghreohgaojfjeorjpw45i945jijJDI3J";
     public List<Booking> findReservationsByArrivalDate(LocalDate arrivalDate) {
         List<Booking> arrivingReservations;
@@ -183,7 +183,7 @@ return List.of();
     }
 
 
-    public void saveOneBookingToDatabase(Booking booking)  {
+    public int saveOneBookingToDatabase(Booking booking)  {
         System.out.println(booking.getAccType());
         Gson gson = new GsonBuilder()
                 .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
@@ -216,6 +216,7 @@ return List.of();
         System.out.println("Response code: " + response.statusCode());
         System.out.println("Response body: " + response.body());
         System.out.println(booking.isPaid);
+        return response.statusCode();
     }
 
     public String getPrice(Booking booking){
@@ -429,6 +430,25 @@ int responseCode = response.statusCode();
 
     }
 
+    public String checkApi() {
+
+            HttpClient client = HttpClient.newBuilder()
+                    .build();
+            Booking booking;
+            try {
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create("http://localhost:8080/check"))
+                        .header("Authorization", "Bearer " + key)
+                        .build();
+                HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                String responseString = (String) response.body();
+                return responseString;
+            }catch (Exception e){
+                return e.toString();
+            }
+
+    }
+
     public List<Booking> findBookingByName(String name) throws IOException, InterruptedException {
         try {
 
@@ -503,6 +523,61 @@ int responseCode = response.statusCode();
 
         }
         return null;
+    }
+    public boolean checkIfFree(LocalDate arrivalDate, LocalDate departureDate, Integer typeId) {
+        try {
+            HttpClient client = HttpClient.newBuilder()
+                    .build();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("http://localhost:8080/checkIfFree?arrivalDate=" + arrivalDate + "&departureDate=" + departureDate + "&type=" + typeId.toString()))
+                    .header("Authorization", "Bearer " + key)
+                    .build();
+            HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                    .create();
+            Type type1 = new TypeToken<Boolean>() {
+            }.getType();
+           // Gson gson = new Gson();
+            Boolean isFree =  gson.fromJson((String) response.body(), Boolean.class);
+            return isFree;
+        }catch (IOException| InterruptedException e){
+
+        }
+        return false;
+    }
+    public int deleteBooking(Integer id){
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                .create();
+
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/delete?id=" + id))
+                .header("Content-Type", "application/json")
+                .header("Authorization", "Bearer " + key)
+                .DELETE()
+                .build();
+
+
+        // Send the request and get the response
+        HttpResponse<String> response = null;
+        try {
+            HttpClient client = HttpClient.newBuilder()
+                    .build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("Nie nie utworzono rezerwacji. Brak połączenia z serwerem!");
+            alert.show();
+
+        }
+        // Print response
+        System.out.println("Response code: " + response.statusCode());
+        System.out.println("Response body: " + response.body());
+
+        return response.statusCode();
     }
 
 

@@ -1,6 +1,7 @@
 package com.example.demosystemfront;
 
 import com.example.demosystemfront.Entities.Booking;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -18,6 +19,10 @@ import java.util.List;
 import java.io.IOException;
 
 import java.io.*;
+
+import static java.awt.Color.BLACK;
+import static java.awt.Color.BLUE;
+import static javafx.scene.paint.Color.BLUEVIOLET;
 
 public class HelperPDF {
 ApiService apiService = new ApiService();
@@ -83,7 +88,7 @@ ApiService apiService = new ApiService();
         if (file != null) {
             try (FileWriter writer = new FileWriter(file)) {
                 // Write CSV headers
-                writer.append("Name;Arrival Date;Departure Date;Price\n");
+                writer.append("Nazwisko;Data przyjazdu;Data wyjazdu;Cena\n");
                 // Initialize total price
                 double totalPrice = 0.0;
 
@@ -100,7 +105,7 @@ ApiService apiService = new ApiService();
                 }
 
                 // Write the total price at the bottom of the CSV file
-                writer.append("\nTotal Price,,,").append(String.valueOf(totalPrice)).append("\n");
+                writer.append("\nSUma,,,").append(String.valueOf(totalPrice)).append("\n");
 
                 System.out.println("CSV file created successfully at: " + file.getAbsolutePath());
 
@@ -137,81 +142,114 @@ ApiService apiService = new ApiService();
 
                 // Set up the title
                 contentStream.beginText();
+                contentStream.setNonStrokingColor(BLUE);
                 contentStream.setFont(serifBold, 24);
-                contentStream.newLineAtOffset(200, yOffSet+ 700);
-                contentStream.showText("Booking Confirmation");
+                contentStream.newLineAtOffset(150, yOffSet+ 700);
+                contentStream.newLine();
+                contentStream.showText("");
+                contentStream.showText("Potwierdzenie rezerwacji");
+                contentStream.newLine();
+                contentStream.showText("");
                 contentStream.endText();
 
                 // Draw a horizontal line under the title
+                contentStream.setNonStrokingColor(BLACK);
+                contentStream.setStrokingColor(BLUE);
                 contentStream.moveTo(50, yOffSet + 680);
                 contentStream.lineTo(550, yOffSet + 680);
                 contentStream.stroke();
 
                 // Add booking details with a more professional layout
                 contentStream.beginText();
-                contentStream.setFont(serif, 12);
+                contentStream.setFont(serifBold, 14);
                 contentStream.setLeading(14.5f); // Line spacing
                 contentStream.newLineAtOffset(50, yOffSet+ 650);
-                contentStream.showText("Guest Information:");
+                contentStream.setNonStrokingColor(BLUE);
+                contentStream.showText("Dane gościa:");
                 contentStream.newLine();
-                contentStream.setFont(serif, 12);
-                contentStream.showText("Name: ");
+                contentStream.showText("");
+                contentStream.newLine();
+                contentStream.setNonStrokingColor(BLACK);
+                contentStream.setFont(serifBold, 12);
+                contentStream.showText("Imie i nazwisko: ");
                 contentStream.setFont(serif, 12);
                 contentStream.showText(booking.getName());
                 contentStream.newLine();
+                contentStream.newLine();
+                contentStream.showText("");
                 contentStream.setFont(serifBold, 12);
-                contentStream.showText("Phone: ");
+                contentStream.showText("Telefon: ");
                 contentStream.setFont(serif, 12);
                 contentStream.showText(booking.getPhone());
                 contentStream.newLine();
+                contentStream.showText("");
+                contentStream.newLine();
                 contentStream.setFont(serifBold, 12);
-                contentStream.showText("Email: ");
+                contentStream.showText("E-mail: ");
                 contentStream.setFont(serif, 12);
                 contentStream.showText(booking.getEmail());
+                contentStream.newLine();
+                contentStream.showText("");
 
                 contentStream.newLine();
-                contentStream.setFont(serifBold, 12);
-                contentStream.showText("Accommodation Details:");
+                contentStream.setNonStrokingColor(BLUE);
+                contentStream.setFont(serifBold, 14);
+                contentStream.showText("Szczegóły noclegu:");
                 contentStream.newLine();
+                contentStream.showText("");
+                contentStream.newLine();
+                contentStream.setNonStrokingColor(BLACK);
                 contentStream.setFont(serifBold, 12);
-                contentStream.showText("Type: ");
+                contentStream.showText("Rodzaj: ");
                 contentStream.setFont(serif, 12);
                 contentStream.showText(booking.getAccType().getName());
                 contentStream.newLine();
+                contentStream.showText("");
+                contentStream.newLine();
                 contentStream.setFont(serifBold, 12);
-                contentStream.showText("Check-in: ");
+                contentStream.showText("Zameldowanie: ");
                 contentStream.setFont(serif, 12);
                 contentStream.showText(booking.getArrivalDate().toString());
                 contentStream.newLine();
+                contentStream.showText("");
+                contentStream.newLine();
                 contentStream.setFont(serifBold, 12);
-                contentStream.showText("Check-out: ");
+                contentStream.showText("Wymeldowanie: ");
                 contentStream.setFont(serif, 12);
                 contentStream.showText(booking.getDepartureDate().toString());
+                contentStream.newLine();
+                contentStream.showText("");
 
                 contentStream.newLine();
                 contentStream.setFont(serifBold, 12);
-                contentStream.showText("Special Requests: ");
+                contentStream.showText("Dodatkowe informacje: ");
                 contentStream.setFont(serif, 12);
                 contentStream.showText(booking.getInfo());
+                contentStream.newLine();
+                contentStream.showText("");
 
                 contentStream.newLine();
                 contentStream.setFont(serifBold, 12);
-                contentStream.showText("Total Price: ");
+                contentStream.showText("Cena całkowita: ");
                 contentStream.setFont(serif, 12);
-                contentStream.showText(apiService.getPrice(booking).toString() + " EUR");
+                contentStream.showText(apiService.getPrice(booking).toString() + " PLN");
 
                 contentStream.endText();
 
                 // Draw another horizontal line to separate sections
-                contentStream.moveTo(50, yOffSet + 500);
-                contentStream.lineTo(550, yOffSet + 500);
+               contentStream.setStrokingColor(BLUE);
+                contentStream.moveTo(50, 200);
+                contentStream.lineTo(550,  200);
                 contentStream.stroke();
 
                 // Add footer
+
                 contentStream.beginText();
                 contentStream.setFont(serif, 10);
                 contentStream.newLineAtOffset(50, yOffSet + 200);
-                contentStream.showText("Thank you for your booking! For any inquiries, contact us at info@hotel.com or call +123456789.");
+                contentStream.showText("Dziękujemy za dokonanie rezerwacji!");
+                contentStream.newLine();
+                contentStream.showText(" W razie jakichkolwiek pytań zapraszmy do kontaktu: info@hotel.com lub +123456789.");
                 contentStream.endText();
 
                 // Close the content stream
@@ -228,7 +266,6 @@ ApiService apiService = new ApiService();
 
     public void generateInvoicePDF(Booking booking, Stage stage) {
 
-        int yOffSet = -150;
         ApiService apiService = new ApiService();
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save PDF");
@@ -242,33 +279,33 @@ ApiService apiService = new ApiService();
 
                 PDPageContentStream contentStream = new PDPageContentStream(document, page);
 
-                // Add a logo or header graphic (you need an image file for this)
+                // Add a logo or header graphic
                 try (InputStream logoImageStream = new FileInputStream("C:\\Users\\Asia\\IdeaProjects\\demosystemFront\\src\\main\\resources\\header.png")) {
                     PDImageXObject logoImage = PDImageXObject.createFromByteArray(document, logoImageStream.readAllBytes(), "logo");
-                    contentStream.drawImage(logoImage, 0, 590, 575, 200); // Position: (x, y), Size: (width, height)
+                    contentStream.drawImage(logoImage, 40, 650, 500, 180); // Logo at the top
                 } catch (IOException e) {
                     System.out.println("Logo not found: " + e.getMessage());
                 }
 
-                // Set up the title for the invoice
+                // Title
                 contentStream.beginText();
                 PDFont serif = PDType0Font.load(document, new File(serifFontPath));
                 PDFont serifBold = PDType0Font.load(document, new File(serifBoldFontPath));
                 contentStream.setFont(serifBold, 24);
-                contentStream.newLineAtOffset(200, yOffSet + 700);
-                contentStream.showText("Rachunek ąćźżęł");
+                contentStream.newLineAtOffset(230, 620);
+                contentStream.showText("Rachunek");
                 contentStream.endText();
 
-                // Draw a horizontal line under the title
-                contentStream.moveTo(50, yOffSet + 680);
-                contentStream.lineTo(550, yOffSet + 680);
+                // Horizontal line under the title
+                contentStream.moveTo(50, 600);
+                contentStream.lineTo(550, 600);
                 contentStream.stroke();
 
-                // Add Company Information and Invoice Details
+                // Hotel Details
                 contentStream.beginText();
                 contentStream.setFont(serif, 12);
-                contentStream.setLeading(14.5f); // Line spacing
-                contentStream.newLineAtOffset(50, yOffSet + 650);
+                contentStream.setLeading(16.5f);
+                contentStream.newLineAtOffset(50, 580);
                 contentStream.showText("Nazwa hotelu");
                 contentStream.newLine();
                 contentStream.showText("Adres linia 1");
@@ -278,24 +315,21 @@ ApiService apiService = new ApiService();
                 contentStream.showText("Numer telefonu: +123456789");
                 contentStream.newLine();
                 contentStream.showText("E-mail: billing@hotel.com");
+                contentStream.endText();
 
-                // Invoice number and Date
-                contentStream.newLine();
-                contentStream.newLine();
+                // Invoice Information
+                contentStream.beginText();
                 contentStream.setFont(serifBold, 12);
-                contentStream.showText("Numer rachunku: ");
-                contentStream.setFont(serif, 12);
-                contentStream.showText("INV-" + System.currentTimeMillis());
+                contentStream.newLineAtOffset(50, 480);
+                contentStream.showText("Numer rachunku: INV-" + System.currentTimeMillis());
                 contentStream.newLine();
-                contentStream.setFont(serif, 12);
-                contentStream.showText("Data: ");
-                contentStream.setFont(serifBold, 12);
-                contentStream.showText(java.time.LocalDate.now().toString());
+                contentStream.showText("Data: " + java.time.LocalDate.now());
+                contentStream.endText();
 
-                // Add customer information
-                contentStream.newLine();
-                contentStream.newLine();
+                // Customer Information
+                contentStream.beginText();
                 contentStream.setFont(serifBold, 12);
+                contentStream.newLineAtOffset(50, 435);
                 contentStream.showText("Imię i nazwisko gościa:");
                 contentStream.newLine();
                 contentStream.setFont(serif, 12);
@@ -306,90 +340,74 @@ ApiService apiService = new ApiService();
                 contentStream.showText("E-mail: " + booking.getEmail());
                 contentStream.endText();
 
-                // Draw a line to separate sections
-                contentStream.moveTo(50, yOffSet + 500);
-                contentStream.lineTo(550, yOffSet + 500);
+                // Horizontal line to separate sections
+                contentStream.moveTo(50, 375);
+                contentStream.lineTo(550, 375);
                 contentStream.stroke();
 
-                // Invoice table headers
+                // Invoice Table Headers
                 contentStream.beginText();
                 contentStream.setFont(serifBold, 12);
-                contentStream.newLineAtOffset(50, yOffSet + 470);
-                contentStream.showText("Opis:");
-                contentStream.newLineAtOffset(300, 0); // Move across horizontally
+                contentStream.newLineAtOffset(50, 365);
+                contentStream.showText("Opis");
+                contentStream.newLineAtOffset(300, 0); // Move to the right for amount
                 contentStream.showText("Kwota (EUR)");
                 contentStream.endText();
 
-                // Draw a line under the headers
-                contentStream.moveTo(50, yOffSet + 460);
-                contentStream.lineTo(550, yOffSet + 460);
+                // Line under headers
+                contentStream.moveTo(50, 360);
+                contentStream.lineTo(550, 360);
                 contentStream.stroke();
 
-                // Itemized list (modify this to match real services in your booking system)
+                // Itemized List
                 contentStream.beginText();
                 contentStream.setFont(serif, 12);
-                contentStream.newLineAtOffset(50, yOffSet + 440);
+                contentStream.newLineAtOffset(50, 345);
                 contentStream.showText("Rodzaj usługi: usługa noclegowa - " + booking.getAccType().getName());
                 contentStream.newLineAtOffset(300, 0);
                 contentStream.showText(apiService.getPrice(booking).toString());
-                contentStream.newLineAtOffset(-300, -20); // Back to left and move down
-
-                // Example Service Fees
+                contentStream.newLineAtOffset(-300, -20); // Back to the left and move down
                 contentStream.showText("Opłaty dodatkowe");
                 contentStream.newLineAtOffset(300, 0);
                 contentStream.showText("0.0");
                 contentStream.newLineAtOffset(-300, -20);
-
-                // Example Taxes
+                contentStream.showText("Podatek (10%)");
+                contentStream.newLineAtOffset(300, 0);
                 double price = Double.parseDouble(apiService.getPrice(booking));
                 double taxAmount = price * 0.10;
-                contentStream.showText("Podatek (10%)");
-                contentStream.showText("Kwota podatku: " + taxAmount);
-                contentStream.newLineAtOffset(300, 0);
-
                 contentStream.showText(String.format("%.2f", taxAmount));
-                contentStream.newLineAtOffset(-300, -20);
-
                 contentStream.endText();
 
-                // Calculate Total
-                double totalAmount = price;
-                        // Double.parseDouble(apiService.getPrice(booking) + 50.0 + taxAmount);
-
-                // Draw a line above the total
-                contentStream.moveTo(50, yOffSet + 340);
-                contentStream.lineTo(550, yOffSet + 340);
+                // Horizontal line before Total
+                contentStream.moveTo(50, 280);
+                contentStream.lineTo(550, 280);
                 contentStream.stroke();
 
-                // Display Total Amount
+                // Total Amount
                 contentStream.beginText();
                 contentStream.setFont(serifBold, 12);
-                contentStream.newLineAtOffset(50, yOffSet + 320);
-                contentStream.showText("Total Amount Due:");
+                contentStream.newLineAtOffset(50, 260);
+                contentStream.showText("Całkowita kwota:");
                 contentStream.newLineAtOffset(300, 0);
-                contentStream.showText(String.format("%.2f EUR", totalAmount));
+                contentStream.showText(String.format("%.2f EUR", price + taxAmount));
                 contentStream.endText();
 
-                // Draw another horizontal line to separate sections
-                contentStream.moveTo(50, yOffSet + 300);
-                contentStream.lineTo(550, yOffSet + 300);
-                contentStream.stroke();
-
-                // Footer Information
+                // Footer
                 contentStream.beginText();
                 contentStream.setFont(serif, 10);
-                contentStream.newLineAtOffset(50, yOffSet + 200);
-                contentStream.showText("Thank you for your stay! For any billing inquiries, contact us at billing@hotel.com or call +123456789.");
+                contentStream.newLineAtOffset(50, 140);
+                contentStream.showText("Dziękujemy za pobyt!");
                 contentStream.newLine();
-                contentStream.showText("Please pay within 30 days. Late payments may incur a 5% late fee.");
+                contentStream.showText("W razie jakichkolwiek pytań zapraszmy do kontaktu: info@hotel.com lub +123456789.");
                 contentStream.endText();
 
                 // Close the content stream
                 contentStream.close();
 
-                // Save the document after adding content
+                // Save the document
                 document.save(file);
                 System.out.println("Invoice PDF created successfully");
+
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

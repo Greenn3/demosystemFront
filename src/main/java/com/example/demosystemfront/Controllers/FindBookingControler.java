@@ -2,18 +2,23 @@ package com.example.demosystemfront.Controllers;
 
 import com.example.demosystemfront.ApiService;
 import com.example.demosystemfront.Entities.Booking;
+import com.example.demosystemfront.Menu;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 
 public class FindBookingControler {
-
+Menu menu = new Menu();
     Stage primaryStage;
     ApiService api = new ApiService();
     ObservableList<Booking> list = FXCollections.observableArrayList();  // Use ObservableList
@@ -26,19 +31,21 @@ public class FindBookingControler {
     }
 
     public Scene createContent() {
+       VBox menuBox  = menu.showMenu(primaryStage);
+        BorderPane mainPane = new BorderPane();
         // Back Button
-        Button backButton = new Button("<");
-        backButton.setOnAction(e -> {
-            MenuController menuController = new MenuController(primaryStage);
-            try {
-                primaryStage.setScene(menuController.createContent());
-            } catch (IOException | InterruptedException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
+//        Button backButton = new Button("<");
+//        backButton.setOnAction(e -> {
+//            MenuController menuController = new MenuController(primaryStage);
+//            try {
+//                primaryStage.setScene(menuController.createContent());
+//            } catch (IOException | InterruptedException ex) {
+//                throw new RuntimeException(ex);
+//            }
+//        });
 
         // ComboBox for search criteria
-        Label searchLabel = new Label("Search By:");
+        Label searchLabel = new Label("Szukaj według:");
         ComboBox<String> searchOptions = new ComboBox<>();
         searchOptions.getItems().addAll(
                 "Numer rezerwacji",
@@ -47,11 +54,11 @@ public class FindBookingControler {
                 "Data wyjazdu",
                 "Status płatności"
         );
-        searchOptions.setPromptText("Select Search Option");
+        searchOptions.setPromptText("Wybierz opcje wyszukiwania");
 
         // Placeholder for the dynamic input field
         dynamicSearchField = new TextField();  // Default to TextField
-        ((TextField) dynamicSearchField).setPromptText("Enter search value");
+        ((TextField) dynamicSearchField).setPromptText("Wprowadź wartość");
 
         // Change input field based on selected search option
         searchOptions.setOnAction(e -> {
@@ -60,7 +67,7 @@ public class FindBookingControler {
         });
 
         // Button to initiate search
-        Button searchButton = new Button("Search");
+        Button searchButton = new Button("Szukaj");
         searchButton.setOnAction(e -> {
             // Perform the search action here and update the bookingList
             try {
@@ -71,19 +78,20 @@ public class FindBookingControler {
         });
 
         // ListView to display booking results
-        Label resultLabel = new Label("Bookings:");
+        Label resultLabel = new Label("Rezewacje:");
         ListView<Booking> bookingList = new ListView<>(list);  // Bind ListView to ObservableList
         bookingList.setPrefHeight(200);  // Adjust size as needed
 
         // Layout setup
         VBox layout = new VBox(10);  // Spacing between elements
         layout.getChildren().addAll(
-                backButton,
+              //  backButton,
                 searchLabel, searchOptions,
                 dynamicSearchField,  // Initially a TextField
                 searchButton,
                 resultLabel, bookingList
         );
+
 
         bookingList.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2) {  // Double-click to handle selection
@@ -94,8 +102,19 @@ public class FindBookingControler {
                 }
             }
         });
-
-        Scene scene = new Scene(layout, 1000, 400);
+        VBox cover = new VBox();
+        VBox smallerBox = new VBox();
+        smallerBox.getChildren().add(layout);
+        cover.getChildren().add(smallerBox);
+        smallerBox.getStyleClass().add("smaller-box");
+        layout.getStyleClass().add("find-booking-view");
+mainPane.setLeft(menuBox);
+//mainPane.setCenter(layout);
+mainPane.setCenter(cover);
+cover.getStyleClass().add("cover");
+        mainPane.setTop(menu.showTopPanel());
+        Scene scene = new Scene(mainPane, 1200, 750);
+        scene.getStylesheets().add(getClass().getResource("/nextStyle.css").toExternalForm());
         return scene;
     }
 
@@ -146,13 +165,13 @@ public class FindBookingControler {
             default:
                 // Use TextField for other options
                 dynamicSearchField = new TextField();
-                ((TextField) dynamicSearchField).setPromptText("Enter search value");
+                ((TextField) dynamicSearchField).setPromptText("...");
                 break;
         }
 
         // Add the new search field to the layout
         if (parent != null) {
-            parent.getChildren().add(2, dynamicSearchField);  // Add the field at the correct position
+            parent.getChildren().add(3, dynamicSearchField);  // Add the field at the correct position
         }
     }
 

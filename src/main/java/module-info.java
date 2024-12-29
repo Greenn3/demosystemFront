@@ -13,7 +13,9 @@ module com.example.demosystemfront {
 
    // requires org.apache.poi.poi.ooxml;
    // requires org.apache.xmlbeans;
-    requires org.apache.commons.collections4; // If you're using it
+    requires org.apache.commons.collections4;
+    requires org.kordamp.bootstrapfx.core;
+    requires java.desktop; // If you're using it
    // requires org.apache.commons.math3; // If you're using it
 
     opens com.example.demosystemfront to javafx.fxml, com.google.gson;

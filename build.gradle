@@ -46,6 +46,8 @@ dependencies {
     implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     implementation 'org.apache.pdfbox:pdfbox:2.0.24'
 
+    implementation 'io.github.mkpaz:atlantafx-base:2.0.1'
+    implementation 'org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0'
 
 //    implementation 'org.apache.poi:poi:5.2.3' // For .xls files
 //    implementation 'org.apache.poi:poi-ooxml:5.2.3' // For .xlsx files
