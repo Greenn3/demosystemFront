@@ -185,11 +185,6 @@ public class Booking {
 
     @Override
     public String toString() {
-        return "Booking{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", arrivalDate=" + arrivalDate +
-                ", departureDate=" + departureDate +
-                '}';
+        return "Rezerwacja nr: " + id   + ", "+ name+", " + arrivalDate.toString()+"-" + departureDate.toString() +", " +accType.getName();
     }
 }

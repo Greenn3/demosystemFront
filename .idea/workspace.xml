@@ -4,17 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1bf3d110-5d1f-4751-a71b-10b656a49409" name="Changes" comment="improved generating pdf and csv files, fixed some layout">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Menu.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/background-cartoony.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/cupertino-dark.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/cupertino-light.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/dracula.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nextStyle.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nord-dark.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/nord-light.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/primer-dark.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/primer-light.css" afterDir="false" />
+    <list default="true" id="1bf3d110-5d1f-4751-a71b-10b656a49409" name="Changes" comment="final december">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/MainViewController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/background-watercolor.jpeg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
@@ -27,9 +19,8 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/PriceListViewController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Controllers/PriceListViewController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Entities/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Entities/Booking.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/HelperPDF.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/HelperPDF.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/newStyle.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/newStyle.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demosystemfront/Menu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/background-cartoony.jpeg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,14 +80,14 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asia/IdeaProjects/demosystemFront/src/main/resources&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Asia/IdeaProjects/NeuralNetwork&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.5367816&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.appearance&quot;,
@@ -132,6 +123,7 @@
     <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.demosystemfront.HelloApplication" />
       <module name="demosystemFront.main" />
+      <option name="VM_PARAMETERS" value="-Dprism.order=sw " />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.example.demosystemfront.*" />
@@ -155,7 +147,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="demosystemFront [dependentComponents]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="demosystemFront [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -166,7 +158,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="dependentComponents" />
+            <option value="build" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -177,7 +169,7 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="demosystemFront [jar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="demosystemFront [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -188,7 +180,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="jar" />
+            <option value="clean" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -199,7 +191,7 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="demosystemFront [prepareMergedJarsDir]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="demosystemFront [jpackage]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -210,29 +202,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="prepareMergedJarsDir" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <method v="2" />
-    </configuration>
-    <configuration name="demosystemFront [prepareModulesDir]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="prepareModulesDir" />
+            <option value="jpackage" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -265,7 +235,7 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
-    <configuration name="demosystemFront [run]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="demosystemFront [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -276,7 +246,7 @@
         </option>
         <option name="taskNames">
           <list>
-            <option value="run" />
+            <option value="shadowJar" />
           </list>
         </option>
         <option name="vmOptions" />
@@ -287,13 +257,21 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.HelloApplication" />
+      <item itemvalue="Gradle.demosystemFront [run]" />
+      <item itemvalue="Gradle.demosystemFront [build]" />
+      <item itemvalue="Gradle.demosystemFront [jpackage]" />
+      <item itemvalue="Gradle.demosystemFront [shadowJar]" />
+      <item itemvalue="Gradle.demosystemFront [clean]" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.demosystemFront [jpackage]" />
+        <item itemvalue="Gradle.demosystemFront [build]" />
+        <item itemvalue="Gradle.demosystemFront [clean]" />
         <item itemvalue="Application.HelloApplication" />
-        <item itemvalue="Gradle.demosystemFront [run]" />
-        <item itemvalue="Gradle.demosystemFront [jar]" />
-        <item itemvalue="Gradle.demosystemFront [prepareModulesDir]" />
-        <item itemvalue="Gradle.demosystemFront [prepareMergedJarsDir]" />
+        <item itemvalue="Gradle.demosystemFront [shadowJar]" />
       </list>
     </recent_temporary>
   </component>
@@ -367,7 +345,22 @@
       <workItem from="1733144138861" duration="6000" />
       <workItem from="1733144161978" duration="1035000" />
       <workItem from="1733209836290" duration="467000" />
-      <workItem from="1735505199575" duration="1221000" />
+      <workItem from="1735505199575" duration="1553000" />
+      <workItem from="1735660550187" duration="1257000" />
+      <workItem from="1737726318648" duration="2317000" />
+      <workItem from="1737827698948" duration="639000" />
+      <workItem from="1737908464024" duration="130000" />
+      <workItem from="1738001511344" duration="727000" />
+      <workItem from="1738344015652" duration="4057000" />
+      <workItem from="1738424138020" duration="2245000" />
+      <workItem from="1738585342690" duration="4583000" />
+      <workItem from="1738956346970" duration="1414000" />
+      <workItem from="1739276901028" duration="2429000" />
+      <workItem from="1739294446582" duration="7389000" />
+      <workItem from="1739359168597" duration="730000" />
+      <workItem from="1739359967929" duration="5242000" />
+      <workItem from="1739365423688" duration="610000" />
+      <workItem from="1739453972136" duration="690000" />
     </task>
     <task id="LOCAL-00001" summary="-">
       <option name="closed" value="true" />
@@ -417,7 +410,15 @@
       <option name="project" value="LOCAL" />
       <updated>1728504971720</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="final december">
+      <option name="closed" value="true" />
+      <created>1735508843305</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1735508843305</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -452,7 +453,8 @@
     <MESSAGE value="added error messages in case of server connection error" />
     <MESSAGE value="new scene to find booking by id, name, date etc." />
     <MESSAGE value="improved generating pdf and csv files, fixed some layout" />
-    <option name="LAST_COMMIT_MESSAGE" value="improved generating pdf and csv files, fixed some layout" />
+    <MESSAGE value="final december" />
+    <option name="LAST_COMMIT_MESSAGE" value="final december" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

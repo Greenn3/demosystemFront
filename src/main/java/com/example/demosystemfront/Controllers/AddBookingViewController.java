@@ -3,7 +3,6 @@ package com.example.demosystemfront.Controllers;
 import com.example.demosystemfront.ApiService;
 import com.example.demosystemfront.Entities.AccType;
 import com.example.demosystemfront.Entities.Booking;
-import com.example.demosystemfront.Menu;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,7 +16,7 @@ import java.io.IOException;
 public class AddBookingViewController {
 
 
-    public Menu menu = new Menu();
+    public MenuController menuController = new MenuController();
     private Stage primaryStage;
     private ApiService apiService = new ApiService();
 
@@ -56,7 +55,7 @@ public class AddBookingViewController {
 
     public Scene createContent() {
         BorderPane mainPane = new BorderPane();
-       VBox menuBox = menu.showMenu(primaryStage);
+       VBox menuBox = menuController.showMenu(primaryStage);
         Label labelSuccessInfo = new Label("");
         try {
             comboBox.getItems().addAll(apiService.loadAllAccTypes());
@@ -197,7 +196,7 @@ thirdColumn.getStyleClass().add("form-column");
 VBox cover = new VBox();
 
         // Wrap the main layout in a ScrollPane
-        HBox topPanel = Menu.showTopPanel();
+        HBox topPanel = MenuController.showTopPanel();
         VBox smallerBox = new VBox();
         smallerBox.getChildren().add(fullLayout);
         ScrollPane scrollPane = new ScrollPane(fullLayout);

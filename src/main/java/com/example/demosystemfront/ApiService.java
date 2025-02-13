@@ -6,19 +6,9 @@ import com.example.demosystemfront.Entities.PricePeriod;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
+
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -33,10 +23,10 @@ import java.util.List;
 
 public class ApiService {
 
-    //dla daty, po dacie przyjazdu
 
 AlertWindow alertWindow = new AlertWindow();
-
+//String baseURL = "http://localhost:8090";
+String baseURL = "http://80.211.200.112:8090";
 
 private static final String key = "rjfghreohgaojfjeorjpw45i945jijJDI3J";
     public List<Booking> findReservationsByArrivalDate(LocalDate arrivalDate) {
@@ -50,7 +40,7 @@ private static final String key = "rjfghreohgaojfjeorjpw45i945jijJDI3J";
             HttpClient client = HttpClient.newBuilder().build();
 
             // Create request URI with date parameter
-            String url = "http://localhost:8080/getBookingByArrivalDate?date=" + encodedDate;
+            String url = baseURL + "/getBookingByArrivalDate?date=" + encodedDate;
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .header("Authorization", "Bearer " + key)
@@ -81,7 +71,7 @@ private static final String key = "rjfghreohgaojfjeorjpw45i945jijJDI3J";
             return arrivingReservations;
 
        } catch (IOException | InterruptedException  e) {
-          //  showAutoCloseErrorPopup("Error", "Something went wrong!", 5); // Shows for 3 seconds
+
             alertWindow.showNotification("Brak połączenia z serwerem", 5);
         }
 
@@ -99,7 +89,7 @@ try {
     HttpClient client = HttpClient.newBuilder().build();
 
     // Create request URI with date parameter
-    String url = "http://localhost:8080/getBookingByDepartureDate?date=" + encodedDate;
+    String url = baseURL + "/getBookingByDepartureDate?date=" + encodedDate;
     HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(url))
             .header("Authorization", "Bearer " + key)
@@ -131,7 +121,7 @@ try {
     return departingReservations;
 }
  catch (IOException | InterruptedException  e) {
-     alertWindow.showNotification("Brak połączenia z serwerem", 5);
+    alertWindow.showNotification("Brak połączenia z serwerem", 5);
         }
 
         // Return an empty list in case of an exception
@@ -139,9 +129,7 @@ try {
     }
 
 
-
-  //lista wszystkich rezerwacji
-   public List<Booking> loadAllReservations() throws URISyntaxException, IOException, InterruptedException {
+   public List<Booking> loadAllReservations() throws  InterruptedException {
         try {
             List<Booking> bookingsList;
 
@@ -149,7 +137,7 @@ try {
                     .build();
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/rezerwacje"))
+                    .uri(URI.create( baseURL + "/allBookings"))
                     .header("Authorization", "Bearer " + key)
                     .build();
 
@@ -162,22 +150,12 @@ try {
             bookingsList = gson.fromJson((String) response.body(), listType);
             int responseCode = response.statusCode();
 
-            // Check for success (status code 200 OK)
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Handle successful response
-                System.out.println("Data fetched successfully!");
-                // Process and display data...
-            } else {
-                // Handle non-200 response codes
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                System.out.println("here " + responseCode);
-                alert.setContentText("Błąd serwera, kod: "+ responseCode);
-            }
+
 
             return bookingsList;
         }
         catch (IOException e){
-            alertWindow.getServerConnectionError();
+          alertWindow.getServerConnectionError();
         }
 return List.of();
     }
@@ -196,7 +174,7 @@ return List.of();
         System.out.println(json);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/dodajRezerwacje"))
+                .uri(URI.create(baseURL +  "/addBooking"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + key)
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -207,15 +185,10 @@ return List.of();
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-           Alert alert = new Alert(Alert.AlertType.ERROR);
-           alert.setContentText("Nie nie utworzono rezerwacji. Brak połączenia z serwerem!");
-           alert.show();
+           alertWindow.showNotification("Nie utworzono rezerwacji. Brak połączenia z serwerem!", 5);
 
         }
-        // Print response
-        System.out.println("Response code: " + response.statusCode());
-        System.out.println("Response body: " + response.body());
-        System.out.println(booking.isPaid);
+
         return response.statusCode();
     }
 
@@ -231,7 +204,7 @@ return List.of();
         System.out.println(json);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/sendPriceData"))
+                .uri(URI.create(baseURL +  "/sendPriceData"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + key)
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -242,15 +215,7 @@ return List.of();
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
 int responseCode = response.statusCode();
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Handle successful response
-                System.out.println("Data fetched successfully!");
-                // Process and display data...
-            } else {
-                // Handle non-200 response codes
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setContentText("Błąd serwera, kod: "+ responseCode);
-            }
+
         } catch (IOException | InterruptedException e) {
            alertWindow.getServerConnectionError();
         }
@@ -263,7 +228,7 @@ int responseCode = response.statusCode();
                 .build();
 
         HttpRequest request2 = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/getPrice"))
+                .uri(URI.create(baseURL + "/getPrice"))
                 .header("Authorization", "Bearer " + key)
                 .build();
         HttpResponse response2 = null;
@@ -280,7 +245,7 @@ int responseCode = response.statusCode();
                 alert.setContentText("Błąd serwera, kod: "+ responseCode);
             }
         } catch (IOException | InterruptedException e) {
-            alertWindow.getServerConnectionError();
+          //  alertWindow.getServerConnectionError();
         }
         System.out.println("rspBod: " + response2.body());
         Gson gson2 = new GsonBuilder()
@@ -298,7 +263,7 @@ int responseCode = response.statusCode();
                     .build();
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/types"))
+                    .uri(URI.create(baseURL +  "/types"))
                     .header("Authorization", "Bearer " + key)
                     .build();
             HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -324,7 +289,7 @@ int responseCode = response.statusCode();
         System.out.println(json);
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/updatePriceList"))
+                .uri(URI.create(baseURL + "/updatePriceList"))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + key)
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -352,7 +317,7 @@ int responseCode = response.statusCode();
             List<PricePeriod> pricePeriodList = new ArrayList<>();
 
             HttpRequest request2 = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/periods"))
+                    .uri(URI.create(baseURL +  "/periods"))
                     .header("Authorization", "Bearer " + key)
                     .build();
             HttpResponse response2 = client.send(request2, HttpResponse.BodyHandlers.ofString());
@@ -372,7 +337,7 @@ int responseCode = response.statusCode();
 
             List<PricePerType> pricePerTypeList;
             HttpRequest request3 = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/getPrices"))
+                    .uri(URI.create(baseURL + "/getPrices"))
                     .header("Authorization", "Bearer " + key)
                     .build();
             HttpResponse response3 = client.send(request3, HttpResponse.BodyHandlers.ofString());
@@ -396,7 +361,7 @@ int responseCode = response.statusCode();
                     .build();
             Booking booking;
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/getBookingById?id=" + id))
+                    .uri(URI.create(baseURL + "/getBookingById?id=" + id))
                     .header("Authorization", "Bearer " + key)
                     .build();
             System.out.println(request);
@@ -437,7 +402,7 @@ int responseCode = response.statusCode();
             Booking booking;
             try {
                 HttpRequest request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/check"))
+                        .uri(URI.create(baseURL + "/check"))
                         .header("Authorization", "Bearer " + key)
                         .build();
                 HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -456,7 +421,7 @@ int responseCode = response.statusCode();
                     .build();
            List<Booking> bookingList;
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/getBookingByName?name=" + name))
+                    .uri(URI.create(baseURL + "/getBookingByName?name=" + name))
                     .header("Authorization", "Bearer " + key)
                     .build();
             System.out.println(request);
@@ -494,7 +459,7 @@ int responseCode = response.statusCode();
                     .build();
             List<Booking> bookingList;
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/getBookingByPaymentStatus?paid=" + isPaid))
+                    .uri(URI.create(baseURL +  "/getBookingByPaymentStatus?paid=" + isPaid))
                     .header("Authorization", "Bearer " + key)
                     .build();
             System.out.println(request);
@@ -529,7 +494,7 @@ int responseCode = response.statusCode();
             HttpClient client = HttpClient.newBuilder()
                     .build();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/checkIfFree?arrivalDate=" + arrivalDate + "&departureDate=" + departureDate + "&type=" + typeId.toString()))
+                    .uri(URI.create(baseURL + "/checkIfFree?arrivalDate=" + arrivalDate + "&departureDate=" + departureDate + "&type=" + typeId.toString()))
                     .header("Authorization", "Bearer " + key)
                     .build();
             HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -554,7 +519,7 @@ int responseCode = response.statusCode();
 
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/delete?id=" + id))
+                .uri(URI.create(baseURL + "/delete?id=" + id))
                 .header("Content-Type", "application/json")
                 .header("Authorization", "Bearer " + key)
                 .DELETE()

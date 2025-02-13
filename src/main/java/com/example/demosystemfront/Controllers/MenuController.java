@@ -1,162 +1,121 @@
 package com.example.demosystemfront.Controllers;
 
-import com.example.demosystemfront.AlertWindow;
 import com.example.demosystemfront.ApiService;
-import com.example.demosystemfront.Entities.Booking;
-import com.example.demosystemfront.Menu;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.kordamp.ikonli.javafx.Icon;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
-import java.util.List;
 
 public class MenuController {
-    private Stage primaryStage;
-    AlertWindow alertWindow = new AlertWindow();
-    ApiService api = new ApiService();
+public static ApiService api = new ApiService();
 
-    public MenuController(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-    }
 
-    public void addBookingsToGrid(List<Booking> bookingList, GridPane gridPane, String status) {
-        int row = 0;
-        int col = 0;
-
-        for (Booking booking : bookingList) {
-            // Create a VBox for the booking
-
-            VBox bookingView = quickView(booking, status);
-
-            // Add the VBox to the GridPane at the current row and column
-            gridPane.add(bookingView, col, row);
-
-            // Increment the column and row counters
-            col++;
-            if (col == 2) { // Move to the next row after every 2 columns
-                col = 0;
-                row++;
-            }
+    private static HBox topPanel; // Store the panel as a static instance
+    private static Label connectionStatus = new Label();
+    private static Label time = new Label();
+    public static HBox showTopPanel() {
+        // If the panel has already been created, return it
+        if (topPanel != null) {
+            return topPanel;
         }
-    }
 
-    public VBox quickView(Booking booking, String staus) {
-Label warning = new Label("Nie opłacone");
-warning.getStyleClass().add("unpaid-warning");
+        // Otherwise, initialize the panel and labels
+        topPanel = new HBox();
+        topPanel.getStyleClass().add("top-panel");
 
-VBox quickViewCard = new VBox();
-    //    Button buttonInfo = new Button("Zobacz więcej");
-quickViewCard.getChildren().addAll(new Label("ID: " + booking.getId().toString()));
-quickViewCard.getChildren().addAll(new Label(booking.name));
-quickViewCard.getChildren().addAll(new Label(booking.getArrivalDate().toString() + " - " + booking.getDepartureDate().toString()));
-if(!booking.isPaid){
-    quickViewCard.getChildren().add(warning);
-}
-        quickViewCard.setOnMouseClicked(event -> {
-            BookingInfoController bookingInfoController = new BookingInfoController(primaryStage);
-            primaryStage.setScene(bookingInfoController.createContent(Integer.parseInt(booking.getId().toString())));
+        //Label title = new Label("System rezerwacji");
+        Label label = new Label("Połączenie z serwerem: ");
+        label.getStyleClass().add("top-panel-label-label");
+        connectionStatus.setText(api.checkApi());
+        if(connectionStatus.getText().equals("OK"))
+            connectionStatus.getStyleClass().addAll("top-panel-label-green", "top-panel-label");
+        else connectionStatus.getStyleClass().addAll("top-panel-label-red", "top-panel-label");
+
+        connectionStatus.textProperty().addListener((observable, oldValue, newValue) -> {
+            // Remove old styles
+            connectionStatus.getStyleClass().removeAll("top-panel-label-green", "top-panel-label-red");
+
+            // Add new styles based on the updated text
+            if ("OK".equals(newValue)) {
+                connectionStatus.getStyleClass().add("top-panel-label-green");
+            } else {
+                connectionStatus.getStyleClass().add("top-panel-label-red");
+            }
         });
 
-
-
-
-        quickViewCard.getStyleClass().add("quick-view-card");
-if(staus.equals("arrival") && booking.isHasArrived()){
-    quickViewCard.getStyleClass().add("quick-view-card-arrived");
-}
-if(staus.equals("departure") && booking.isHasLeft()){
-    quickViewCard.getStyleClass().add("quick-view-card-left");
-}
-if(staus.equals("arrival") && !booking.isHasArrived()){
-    quickViewCard.getStyleClass().add("quick-view-card-not-arrived");
-}
-if(staus.equals("departure") && !booking.isHasLeft()){
-    quickViewCard.getStyleClass().add("quick-view-card-not-left");
-}
-
-
-
-        return quickViewCard;
+        topPanel.getChildren().addAll( label, connectionStatus);
+        topPanel.getStylesheets().add("/nextStyle.css");
+        return topPanel;
     }
 
-    public Scene createContent() throws IOException, InterruptedException {
-
-
-        VBox menuBox = Menu.showMenu(primaryStage);
-
-
-        List<Booking> todayArrivals = api.findReservationsByArrivalDate(LocalDate.now());
-        List<Booking> todayDepartures = api.findReservationsByDepartureDate(LocalDate.now());
-        List<Booking> tomorrowArrivals = api.findReservationsByArrivalDate(LocalDate.now().plusDays(1));
-        List<Booking> tomorrowDepartures = api.findReservationsByDepartureDate(LocalDate.now().plusDays(1));
-
-        GridPane gridPane = new GridPane();
-        VBox mainBookingPanel = new VBox();
-        mainBookingPanel.setPadding(new Insets(20));
-        mainBookingPanel.getChildren().add(gridPane);
-//        gridPane.setStyle("-fx-border-color: white");
-
-        VBox todayArrivalsContainer = new VBox(10, new Label("Dzisiaj - Przyjazdy"));
-        todayArrivalsContainer.getStyleClass().add("booking-box");
-        GridPane taGridPane = new GridPane();
-        taGridPane.getStyleClass().add("inner-grid");
-        todayArrivalsContainer.getChildren().add(taGridPane);
-
-        VBox todayDeparturesContainer = new VBox(10, new Label("Dzisiaj - Wyjazdy"));
-        todayDeparturesContainer.getStyleClass().add("booking-box");
-        GridPane tdGridPane = new GridPane();
-        tdGridPane.getStyleClass().add("inner-grid");
-        todayDeparturesContainer.getChildren().add(tdGridPane);
-
-        VBox tomorrowArrivalsContainer = new VBox(10, new Label("Jutro - Przyjazdy"));
-        tomorrowArrivalsContainer.getStyleClass().add("booking-box");
-        GridPane tmaGridPane = new GridPane();
-        tmaGridPane.getStyleClass().add("inner-grid");
-        tomorrowArrivalsContainer.getChildren().add(tmaGridPane);
-
-        VBox tomorrowDeparturesContainer = new VBox(10, new Label("Jutro - Wyjazdy"));
-        tomorrowDeparturesContainer.getStyleClass().add("booking-box");
-        GridPane tmdGridPane = new GridPane();
-        tmdGridPane.getStyleClass().add("inner-grid");
-        tomorrowDeparturesContainer.getChildren().add(tmdGridPane);
-
-        gridPane.add(todayArrivalsContainer, 0, 0);
-        gridPane.add(todayDeparturesContainer, 1, 0);
-        gridPane.add(tomorrowArrivalsContainer, 0, 1);
-        gridPane.add(tomorrowDeparturesContainer, 1, 1);
-addBookingsToGrid(todayArrivals, taGridPane, "arrival");
-addBookingsToGrid(todayDepartures, tdGridPane, "departure");
-addBookingsToGrid(tomorrowArrivals, tmaGridPane, "arrival");
-addBookingsToGrid(tomorrowDepartures, tmdGridPane, "departure");
-
-
-VBox cover = new VBox();
-VBox smallerBox = new VBox();
-smallerBox.getStyleClass().add("smaller-box-home");
-
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(mainBookingPanel);  // Set the VBox as the content of the ScrollPane
-        scrollPane.setFitToWidth(true); // Makes the VBox take up the full width of the ScrollPane
-        smallerBox.getChildren().add(scrollPane);
-        cover.getChildren().add(smallerBox);
-        scrollPane.getStyleClass().add("scroll-pane-main");
-        mainBookingPanel.getStyleClass().add("main-pane");
-BorderPane mainPane = new BorderPane();
-mainPane.setTop(Menu.showTopPanel());
-mainPane.setLeft(menuBox);
-
-cover.getStyleClass().add("cover");
-mainPane.setCenter(cover);
-        Scene scene = new Scene(mainPane, 1200, 750);
-        scene.getStylesheets().add(getClass().getResource("/nextStyle.css").toExternalForm());
-
-        return scene;
+    public static Label getConnectionStatus() {
+        return connectionStatus;
     }
+
+    public static Label getTimeLabel() {
+        return time;
+    }
+
+    public static VBox showMenu(Stage primaryStage) {
+
+        VBox buttonPanel = new VBox(10);
+//        buttonPanel.setPrefWidth(200);
+//        buttonPanel.setAlignment(Pos.CENTER);
+//        buttonPanel.setPadding(new Insets(20, 10, 20, 10));
+        buttonPanel.getStyleClass().add("menu-panel");
+
+        Button scene1Button = new Button("Nowa rezerwacja");
+        scene1Button.getStyleClass().add("menu-panel-button");
+        scene1Button.setOnAction(e -> {
+            AddBookingViewController addBookingViewController = new AddBookingViewController(primaryStage);
+            primaryStage.setScene(addBookingViewController.createContent());
+        });
+
+        Button scene2Button = new Button("Kalendarz");
+        scene2Button.getStyleClass().add("menu-panel-button");
+        scene2Button.setOnAction(e -> {
+            CalendarViewController calendarViewController = new CalendarViewController(primaryStage);
+            try {
+                primaryStage.setScene(calendarViewController.createContent());
+            } catch (IOException | InterruptedException | URISyntaxException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        Button scene3Button = new Button("Cennik");
+        scene3Button.getStyleClass().add("menu-panel-button");
+        scene3Button.setOnAction(e -> {
+            PriceListViewController priceListViewController = new PriceListViewController(primaryStage);
+            primaryStage.setScene(priceListViewController.createContent());
+        });
+
+        Button scene4Button = new Button("Wyszukaj rezerwację");
+        scene4Button.getStyleClass().add("menu-panel-button");
+        scene4Button.setOnAction(e -> {
+            FindBookingControler findBookingControler = new FindBookingControler(primaryStage);
+            primaryStage.setScene(findBookingControler.createContent());
+        });
+
+        Button mainSceneButton = new Button("Strona główna");
+        mainSceneButton.getStyleClass().add("menu-panel-button");
+        mainSceneButton.setOnAction(e -> {
+            MainViewController mainViewController = new MainViewController(primaryStage);
+            try {
+                primaryStage.setScene(mainViewController.createContent());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        buttonPanel.getChildren().addAll(mainSceneButton, scene1Button, scene2Button, scene3Button, scene4Button);
+buttonPanel.getStylesheets().add("/nextStyle.css");
+        return buttonPanel;
+    }
+
 }

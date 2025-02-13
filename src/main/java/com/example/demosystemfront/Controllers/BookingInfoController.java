@@ -4,27 +4,23 @@ import com.example.demosystemfront.ApiService;
 import com.example.demosystemfront.Entities.AccType;
 import com.example.demosystemfront.Entities.Booking;
 import com.example.demosystemfront.HelperPDF;
-import com.example.demosystemfront.Menu;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import javafx.scene.control.ScrollPane;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 
 public class BookingInfoController {
-    Menu menu = new Menu();
+    MenuController menuController = new MenuController();
     HelperPDF helperPDF = new HelperPDF();
     ApiService api = new ApiService();
     Booking booking;
@@ -37,7 +33,7 @@ public class BookingInfoController {
     }
 
     public Scene createContent(Integer id) {
-      VBox menuBox  = menu.showMenu(primaryStage);
+      VBox menuBox  = menuController.showMenu(primaryStage);
         BorderPane mainPane = new BorderPane();
         BooleanProperty editable = new SimpleBooleanProperty(false);
 
@@ -48,9 +44,9 @@ public class BookingInfoController {
         Button backButton = new Button("<");
         backButton.getStyleClass().add("button-back");
         backButton.setOnAction(e -> {
-            MenuController menuController = new MenuController(primaryStage);
+            MainViewController mainViewController = new MainViewController(primaryStage);
             try {
-                primaryStage.setScene(menuController.createContent());
+                primaryStage.setScene(mainViewController.createContent());
             } catch (IOException | InterruptedException ex) {
                 throw new RuntimeException(ex);
             }
@@ -131,9 +127,10 @@ public class BookingInfoController {
         price.setEditable(false);
 
         CheckBox discount = new CheckBox();
+
         discount.disableProperty().bind(editable.not());
 
-        TextField discountAmount = new TextField();
+        TextField discountAmount = new TextField("0");
 
 
         TextArea addInfo = new TextArea(booking.getInfo());
@@ -164,9 +161,9 @@ deleteButton.setOnAction(e -> {
         System.out.println(id);
 
         // Navigate back to the menu
-        MenuController menuController = new MenuController(primaryStage);
+        MainViewController mainViewController = new MainViewController(primaryStage);
         try {
-            primaryStage.setScene(menuController.createContent());
+            primaryStage.setScene(mainViewController.createContent());
         } catch (IOException | InterruptedException ex) {
             throw new RuntimeException(ex);
         }
@@ -287,7 +284,7 @@ mainColumnsGrid.getStyleClass().add("main-columns-grid");
         cover.getStyleClass().add("cover");
         mainPane.setLeft(menuBox);
         mainPane.setCenter(cover);
-        mainPane.setTop(menu.showTopPanel());
+        mainPane.setTop(menuController.showTopPanel());
         Scene scene = new Scene(mainPane, 1200, 750);
         scene.getStylesheets().add(getClass().getResource("/nextStyle.css").toExternalForm());
         return scene;

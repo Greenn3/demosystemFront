@@ -2,11 +2,8 @@ package com.example.demosystemfront.Controllers;
 
 import com.example.demosystemfront.ApiService;
 import com.example.demosystemfront.Entities.Booking;
-import com.example.demosystemfront.Menu;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -14,11 +11,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 
 public class FindBookingControler {
-Menu menu = new Menu();
+MenuController menuController = new MenuController();
     Stage primaryStage;
     ApiService api = new ApiService();
     ObservableList<Booking> list = FXCollections.observableArrayList();  // Use ObservableList
@@ -31,7 +27,7 @@ Menu menu = new Menu();
     }
 
     public Scene createContent() {
-       VBox menuBox  = menu.showMenu(primaryStage);
+       VBox menuBox  = menuController.showMenu(primaryStage);
         BorderPane mainPane = new BorderPane();
         // Back Button
 //        Button backButton = new Button("<");
@@ -112,7 +108,7 @@ mainPane.setLeft(menuBox);
 //mainPane.setCenter(layout);
 mainPane.setCenter(cover);
 cover.getStyleClass().add("cover");
-        mainPane.setTop(menu.showTopPanel());
+        mainPane.setTop(menuController.showTopPanel());
         Scene scene = new Scene(mainPane, 1200, 750);
         scene.getStylesheets().add(getClass().getResource("/nextStyle.css").toExternalForm());
         return scene;

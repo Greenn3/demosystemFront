@@ -11,13 +11,9 @@ import com.example.demosystemfront.ApiService;
 import com.example.demosystemfront.Entities.Booking;
 import com.example.demosystemfront.HelperPDF;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -26,7 +22,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +30,7 @@ import java.time.format.DateTimeFormatter;
 
 
 public class CalendarViewController {
-    com.example.demosystemfront.Menu menu = new com.example.demosystemfront.Menu();
+    MenuController menuController = new MenuController();
     private Stage primaryStage;
     public List<Booking> bookingsList;
     public List<Booking> ap1Bookings = new ArrayList<>();
@@ -60,21 +55,8 @@ public HelperPDF helperPDF = new HelperPDF();
         VBox entryView = new VBox();
 
         entryView.setPrefSize(75, 15);
-//        Label label = new Label();
-//        TextField textFieldName = new TextField();
-//        TextField textFieldArrivalDate = new TextField();
-//        DatePicker datePickerArrivalDate = new DatePicker();
-//        datePickerArrivalDate.setValue(pop.getEntry().getStartDate());
-//        TextField textFieldDepartureDate = new TextField();
-//        label.setText(pop.getEntry().getTitle());
-//        textFieldName.setText("nazwisko: " + pop.getEntry().getTitle());
-//        TextField textFieldName2 = new TextField();
-//        textFieldName2.setText(pop.getEntry().getId());
-//        textFieldArrivalDate.setText("data przyjazdu: " + pop.getEntry().getStartDate().toString());
-//        textFieldDepartureDate.setText("data wyjazdu: " + pop.getEntry().getEndDate().toString());
+//
         String id = pop.getEntry().getId();
-//        Label labelId = new Label();
-//        label.setText(pop.getEntry().getId());
 
 
         Button buttonAddEntry = new Button();
@@ -87,30 +69,6 @@ public HelperPDF helperPDF = new HelperPDF();
                 }
         );
 
-    //    Button buttonGeneratePDF = new Button();
-
-//        buttonGeneratePDF.setText("PDF");
-//        buttonGeneratePDF.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//            @Override
-//            public void handle(MouseEvent event) {
-//                System.out.println(id);
-//                Booking booking = null;
-//                for (Booking b : bookingsList) {
-//                    System.out.println(b.toString());
-//                    if (b.getId().equals(Integer.valueOf(id))) {
-//                        booking = b;
-//                        System.out.println(b.toString());
-//
-//                    }
-//                    else{
-//                        //make alert window
-//                    }
-//                }
-//                // helperPDF.generateConfirmationPDF(booking, primaryStage);
-//                helperPDF.generateInvoicePDF(booking, primaryStage);
-//
-//            }
-//        });
 
         entryView.getChildren().addAll( buttonAddEntry);
 
@@ -285,7 +243,7 @@ camping.setStyle(Calendar.Style.STYLE1);
 
                     try {
                         // update every 10 seconds
-                        sleep(10000);
+                        sleep(60000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -332,7 +290,7 @@ full.getChildren().addAll(labels, calendarsBox);
     }
 
     public Scene createContent() throws IOException, URISyntaxException, InterruptedException {
-   VBox menuBox = menu.showMenu(primaryStage);
+   VBox menuBox = menuController.showMenu(primaryStage);
    BorderPane mainPane = new BorderPane();
         VBox layout = new VBox(10);
         // layout.setStyle("-fx-background-color: lightcoral");
@@ -340,7 +298,7 @@ full.getChildren().addAll(labels, calendarsBox);
 
         Button backButton = new Button("<");
         backButton.setOnAction(e -> {
-            MenuController menuScene = new MenuController(primaryStage);
+            MainViewController menuScene = new MainViewController(primaryStage);
             //  primaryStage.setScene(new Scene(menuScene.createContent(), 400, 300));
             try {
                 primaryStage.setScene(menuScene.createContent());
@@ -357,7 +315,7 @@ full.getChildren().addAll(labels, calendarsBox);
       Label label = new Label("Wygeneruj zestawienie od - do");
 
 MenuBar menuBar = new MenuBar();
-        Menu viewMenu = new Menu("Rodzaj pliku:");
+        Menu viewMenuController = new Menu("Rodzaj pliku:");
 
         // Create RadioMenuItems
         RadioMenuItem pdf = new RadioMenuItem("PDF");
@@ -367,8 +325,8 @@ MenuBar menuBar = new MenuBar();
         ToggleGroup viewGroup = new ToggleGroup();
         pdf.setToggleGroup(viewGroup);
         csv.setToggleGroup(viewGroup);
-        viewMenu.getItems().addAll(pdf, csv);
-menuBar.getMenus().add(viewMenu);
+        viewMenuController.getItems().addAll(pdf, csv);
+menuBar.getMenus().add(viewMenuController);
 DatePicker from = new DatePicker();
 DatePicker to = new DatePicker();
 List<Booking> selectedBookings = new ArrayList<>();
@@ -416,7 +374,7 @@ VBox generationVbox = new VBox(5,label,
 layout.getStyleClass().add("calendar-layout");
 mainPane.setLeft(menuBox);
 mainPane.setCenter(cover);
-        mainPane.setTop(menu.showTopPanel());
+        mainPane.setTop(menuController.showTopPanel());
         Scene scene = new Scene(mainPane, 1300, 750);
         scene.getStylesheets().add(getClass().getResource("/nextStyle.css").toExternalForm());
         return scene;

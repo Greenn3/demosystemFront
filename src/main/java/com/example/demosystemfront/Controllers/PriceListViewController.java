@@ -5,28 +5,21 @@ import com.example.demosystemfront.ApiService;
 import com.example.demosystemfront.Entities.AccType;
 import com.example.demosystemfront.Entities.PricePerType;
 import com.example.demosystemfront.Entities.PricePeriod;
-import com.example.demosystemfront.Menu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.ConnectException;
-import java.net.HttpRetryException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PriceListViewController {
-    Menu menu = new Menu();
+    MenuController menuController = new MenuController();
 
     private Stage primaryStage;
     ApiService apiService = new ApiService();
@@ -195,7 +188,7 @@ return root;
 
 
     public Scene createContent() {
-        VBox menuBox = menu.showMenu(primaryStage);
+        VBox menuBox = menuController.showMenu(primaryStage);
         BorderPane mainPane = new BorderPane();
         mainPane.setLeft(menuBox);
 
@@ -212,9 +205,9 @@ return root;
         mainPane.setCenter(cover);
         Button backButton = new Button("<");
         backButton.setOnAction(e -> {
-            MenuController menuController = new MenuController(primaryStage);
+            MainViewController mainViewController = new MainViewController(primaryStage);
             try {
-                primaryStage.setScene(menuController.createContent());
+                primaryStage.setScene(mainViewController.createContent());
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             } catch (InterruptedException ex) {
@@ -234,7 +227,7 @@ return root;
     //   layout.getChildren().add(backButton);
         layout.getChildren().add(gridPane);
         menuBox.getStyleClass().add("menu-panel");
-        mainPane.setTop(menu.showTopPanel());
+        mainPane.setTop(menuController.showTopPanel());
         //layout.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
         Scene scene = new Scene(mainPane, 1200, 750);
         scene.getStylesheets().add(getClass().getResource("/nextStyle.css").toExternalForm());
